@@ -6,13 +6,24 @@
 
 For developing purposes we used following packages:
 
-* usethis: especially usethis::use_data when creating data for your package, usethis::use_package_doc for managing dependencies [see](https://r-pkgs.org/dependencies-in-practice.html#sec-dependencies-in-imports-r-code)
-* checkmate: validating of arguments
-* devtools: checking package
-* roxygen2 for documentation
+* usethis: especially useful:
+    * usethis::use_data when creating data for your package, 
+    * usethis::use_package_doc for managing dependencies [see](https://r-pkgs.org/dependencies-in-practice.html#sec-dependencies-in-imports-r-code)
+* checkmate: validating function arguments
+* devtools: documenting, testing, checking and building package
+    * devtools::document()
+    * devtools::test_coverage_file()
+* roxygen2: documenting package
 
-Other packages
-* [appler](https://github.com/cran/appler): downloading reviews 
+For additional information about R package development check [R Packages (2e)](https://r-pkgs.org/)
+
+Other packages:
+
+* [appler](https://github.com/cran/appler) for downloading reviews 
 * data.table: data manipulation
+* ggplot2: visualizations
 
-For further look in [R Packages (2e)](https://r-pkgs.org/)
+# To do:
+
+* add hyperlinks to the packages mentioned in README
+* add inst/ directory with shiny files
