@@ -41,17 +41,23 @@ To run the application:
 # How this project complies with the requirements?
 
 1. Writing own advanced functions in R (including defensive programming)
+    
     To do: some advanced functions
     As far as the defensive programing oges, our functions includes wide range of assertions of the parameters.
 2. Object-oriented programming - creating own classes, methods and generic functions of the S3, S4 and R6 systems
+    
     We've decided to use S4 system
 3. Use of C++ in R (Rcpp)
+    
     It was not a part of our proposal
 4. Vectorisation of the code
+    
     It was not a part of our proposal
 5. Shiny + creating analytical dashboards
+    
     Part of the repo contains ui and server logic
 6. Creating own R packages
+    
     All of the functions are wrapped into the R package structure. Apart from wrting functions, we've also:
     * added sample data and wrapped it into data - data-raw logic
     * added inst/ directory to contain all the files necessary to run Shiny application
