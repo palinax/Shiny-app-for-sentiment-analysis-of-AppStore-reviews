@@ -55,7 +55,9 @@ To run the application:
     It was not a part of our proposal
 5. Shiny + creating analytical dashboards
     
-    Part of the repo contains ui and server logic
+    Part of the repo contains ui and server logic. We have used:
+    * widgets like `selectInput` or `dateRangeInput`, 
+    * reactive expressions to optimize performance.
 6. Creating own R packages
     
     All of the functions are wrapped into the R package structure. Apart from wrting functions, we've also:
