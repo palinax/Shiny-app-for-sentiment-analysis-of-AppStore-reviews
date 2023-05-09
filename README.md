@@ -26,4 +26,5 @@ Other packages:
 # To do:
 
 * add hyperlinks to the packages mentioned in README
-* add inst/ directory with shiny files
+* add dummy output to the app to present logic
+* create a class to store data for reviews, creating specifif visualizations
