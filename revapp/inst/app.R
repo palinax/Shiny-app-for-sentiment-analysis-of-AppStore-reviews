@@ -14,7 +14,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
     output$circ <- renderPlot(expr = {
-        plot_rating_hour(sample_apps_reviews)
+        plot_rating_hour(sample_apps_reviews[app_id == input$app_name])
     })
 }
 

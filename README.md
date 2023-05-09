@@ -23,6 +23,14 @@ Other packages:
 * data.table: data manipulation
 * ggplot2: visualizations
 
+# Shiny application
+
+To run the application:
+
+* clone this repo
+* run `devtools::load_all()`
+* run `shiny::runApp("inst")`
+
 # To do:
 
 * add hyperlinks to the packages mentioned in README
