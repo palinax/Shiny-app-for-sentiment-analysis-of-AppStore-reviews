@@ -42,11 +42,17 @@ To run the application:
 
 1. Writing own advanced functions in R (including defensive programming)
     
-    To do: some advanced functions
     As far as the defensive programing oges, our functions includes wide range of assertions of the parameters.
+    To do: 
+    * some advanced functions
+    
 2. Object-oriented programming - creating own classes, methods and generic functions of the S3, S4 and R6 systems
     
-    We've decided to use S4 system
+    We've decided to use S4 system. We have class and appriopriate methods for:
+    * review - tokenize it
+    * set of reviews - tokenize it
+    To do:
+    * add additional classes and methods (what and what for?)
 3. Use of C++ in R (Rcpp)
     
     It was not a part of our proposal
@@ -58,6 +64,13 @@ To run the application:
     Part of the repo contains ui and server logic. We have used:
     * widgets like `selectInput` or `dateRangeInput`, 
     * reactive expressions to optimize performance.
+    * using a condtional panel for different tabs
+    
+    To do:
+    * using fileInput for data for an user
+    * using custom .css file
+    * add input to user to run some analysis
+    * adding reactive values and isolates
 6. Creating own R packages
     
     All of the functions are wrapped into the R package structure. Apart from wrting functions, we've also:
