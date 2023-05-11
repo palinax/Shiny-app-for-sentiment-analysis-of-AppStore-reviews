@@ -6,37 +6,33 @@
 
 For developing purposes we used following packages:
 
-* usethis: especially useful:
+* [usethis](https://github.com/cran/usethis): especially useful:
     * usethis::use_data when creating data for your package, 
     * usethis::use_package_doc for managing dependencies [see](https://r-pkgs.org/dependencies-in-practice.html#sec-dependencies-in-imports-r-code)
-* checkmate: validating function arguments
-* devtools: documenting, testing, checking and building package
+* [checkmate](https://mllg.github.io/checkmate/): validating function arguments
+* [devtools](https://devtools.r-lib.org/): documenting, testing, checking and building package
     * devtools::document()
     * devtools::test_coverage_file()
-* roxygen2: documenting package
+* [roxygen2](https://roxygen2.r-lib.org/): documenting package
 
 For additional information about R package development check [R Packages (2e)](https://r-pkgs.org/)
 
-Other packages:
+For the application part of the project:
 
+* [shiny](https://github.com/rstudio/shiny) for, well, Shiny
 * [appler](https://github.com/cran/appler) for downloading reviews 
-* data.table: data manipulation
-* ggplot2: visualizations
+* [data.table](https://rdatatable.gitlab.io/data.table/) for data manipulation
+* [ggplot2](https://ggplot2.tidyverse.org/) for visualizations
+* [DT](https://github.com/rstudio/DT) for displaying tables in Shiny
 
 # Shiny application
 
 To run the application:
 
 * clone this repo
+* open up the `revapp.Rproj`
 * run `devtools::load_all()`
 * run `shiny::runApp("inst")`
-
-# To do:
-
-* add hyperlinks to the packages mentioned in README
-* add dummy output to the app to present the logic
-* create a class to store data for reviews, creating specific visualizations
-* add assertions to the functions and tests
 
 # How this project complies with the requirements?
 
@@ -49,10 +45,12 @@ To run the application:
 2. Object-oriented programming - creating own classes, methods and generic functions of the S3, S4 and R6 systems
     
     We've decided to use S4 system. We have class and appriopriate methods for:
-    * review - tokenize it
-    * set of reviews - tokenize it
+    * `review` - class represting single review. Methods:
+        * tokenize_review
+    * review_set - class representing set of reviews. Methods:
+        * tokenize_review_set
     To do:
-    * add additional classes and methods (what and what for?)
+    * add additional classes and methods (for cleaning data, for calculating statistics, for visualizations)
 3. Use of C++ in R (Rcpp)
     
     It was not a part of our proposal
@@ -78,3 +76,23 @@ To run the application:
     * added inst/ directory to contain all the files necessary to run Shiny application
     * added documentation for all the functions
     * added tests to those functions
+
+# Steps
+
+* write out pipeline in a way that each step is covered in some function. describe briefly those functions and arguments of those functions
+* modify the `app.R` file by adding description on each tab what the user would be enable to see/do/modify on each tab
+* based on the description insert dummy output presenting the logic in form fo buttons, plots, tables etc.
+* write out specific function and simple documentation for those functions
+* try to organize the functions in a set of classes and methods (eg. to store data for reviews, creating specific visualizations)
+* add assertions to the functions and tests
+* assess package from the technical point of view (with `devtools::check()`)
+* assess package from th Advanced R point of view (are the functions advanced enough, are all of the needed things included)
+
+## Pipeline
+
+First step: clean the data
+
+* clean_the_data()
+    * tokenize() 
+    * remove_stop_words()
+    * remove_punctioans()
