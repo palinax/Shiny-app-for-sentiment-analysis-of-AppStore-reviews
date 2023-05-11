@@ -14,6 +14,7 @@ For developing purposes we used following packages:
     * devtools::document()
     * devtools::test_coverage_file()
 * [roxygen2](https://roxygen2.r-lib.org/): documenting package
+* [lintr](https://github.com/r-lib/lintr/) for keeping the codes neat (see for yourself using `lintr::lint_package()`)
 
 For additional information about R package development check [R Packages (2e)](https://r-pkgs.org/)
 
