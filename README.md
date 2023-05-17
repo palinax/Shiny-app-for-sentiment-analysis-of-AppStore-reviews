@@ -104,3 +104,13 @@ First step: clean the data
     * Calculate terms frequency in a given text corpus termFreq()
     * Remove infrequently appearing items removeSparseTerms()
     
+* Sentiment Analysis 
+    * Assign sentiment scores to the pre-processed text per each review 
+    * Calculate average sentiment for the app 
+   
+* Sentiment Visualisations
+   * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral
+   * Sentiment distribution as a histogram with sentiment scrores across app
+   * Sentiment ratio
+   * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc 
+   * Sentiments stats like Standard Deviation, Min/Max, percentiles 
