@@ -93,7 +93,14 @@ To run the application:
 
 First step: clean the data
 
-* clean_the_data()
-    * tokenize() 
-    * remove_stop_words()
-    * remove_punctioans()
+* Text pre-processing 
+    * Convert reviews to lowercase tolower()
+    * Remove numerical digits gsub(), removeNumbers()
+    * Remove punctuation gsub(), removePunctuation()
+    * Tokenize text into individual words word_tokenize()
+    * Remove stopwords stopwords()
+    * Remove words not relevant to sentiment analysis (those left not captured by stopwords) removeWords()
+    * Perform stemming to reduce words to their roots/base stemDocument()
+    * Calculate terms frequency in a given text corpus termFreq()
+    * Remove infrequently appearing items removeSparseTerms()
+    
