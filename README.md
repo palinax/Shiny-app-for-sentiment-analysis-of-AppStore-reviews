@@ -89,9 +89,10 @@ To run the application:
 * assess package from the technical point of view (with `devtools::check()`)
 * assess package from th Advanced R point of view (are the functions advanced enough, are all of the needed things included)
 
+
 ## Pipeline
 
-* Text pre-processing 
+* Text pre-processing textpreProcess()
     * Convert reviews to lowercase tolower()
     * Remove numerical digits gsub(), removeNumbers()
     * Remove punctuation gsub(), removePunctuation()
@@ -102,12 +103,21 @@ To run the application:
     * Calculate terms frequency in a given text corpus termFreq()
     * Remove infrequently appearing items removeSparseTerms()
     
-* Sentiment Analysis 
-    * Assign sentiment scores to the pre-processed text per each review 
-    * Calculate average sentiment for the app 
+* Sentiment Analysis sentimentScore() 
+    * Assign sentiment scores to the pre-processed text per each review assignScores()
+    * Calculate average sentiment for the app averageSentiment()
    
-* Sentiment Visualisations
-   * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral
+* Sentiment Visualisations sentimentVizual()
+   * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral sentimentDistributionPie()
+   * Sentiment distribution as a histogram with sentiment scrores across app sentimentDistributionHist() 
+   * Sentiment ratio sentimentRatio() 
+   * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc sentimentRating()
+   * Sentiments stats like Standard Deviation, Min/Max, percentile sentimentStats()
+  
+* Topic modelling topicModel()
+   * LDA algorith to extract topics for a chosen app (select k number of topics) generateTopics()
+   * Show probability of each topic / sort by probability topicSort()
+   * Visualize probaility of each topic e.g with stacked chart per chosen app topicVizual()
    * Sentiment distribution as a histogram with sentiment scrores across app
    * Sentiment ratio
    * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc 
