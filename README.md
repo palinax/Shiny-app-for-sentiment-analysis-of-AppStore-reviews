@@ -91,7 +91,6 @@ To run the application:
 
 
 ## Pipeline
-
 * Text pre-processing textpreProcess()
     * Convert reviews to lowercase tolower()
     * Remove numerical digits gsub(), removeNumbers()
@@ -102,6 +101,9 @@ To run the application:
     * Perform stemming to reduce words to their roots/base stemDocument()
     * Calculate terms frequency in a given text corpus termFreq()
     * Remove infrequently appearing items removeSparseTerms()
+
+* Wordcloud
+   * Generate word cloud wordCloud()
     
 * Sentiment Analysis sentimentScore() 
     * Assign sentiment scores to the pre-processed text per each review assignScores()
