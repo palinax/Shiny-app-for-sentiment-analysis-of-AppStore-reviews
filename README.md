@@ -91,7 +91,6 @@ To run the application:
 
 
 ## Pipeline
-
 * Text pre-processing textpreProcess()
     * Convert reviews to lowercase tolower()
     * Remove numerical digits gsub(), removeNumbers()
@@ -102,28 +101,22 @@ To run the application:
     * Perform stemming to reduce words to their roots/base stemDocument()
     * Calculate terms frequency in a given text corpus termFreq()
     * Remove infrequently appearing items removeSparseTerms()
+
+* Wordcloud
+   * Generate word cloud wordCloud()
     
 * Sentiment Analysis sentimentScore() 
     * Assign sentiment scores to the pre-processed text per each review assignScores()
     * Calculate average sentiment for the app averageSentiment()
+    * Table with reviews with sentiments score & sentiments assigned 
    
 * Sentiment Visualisations sentimentVizual()
    * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral sentimentDistributionPie()
    * Sentiment distribution as a histogram with sentiment scrores across app sentimentDistributionHist() 
    * Sentiment ratio sentimentRatio() 
-   * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc sentimentRating()
    * Sentiments stats like Standard Deviation, Min/Max, percentile sentimentStats()
   
 * Topic modelling topicModel()
    * LDA algorith to extract topics for a chosen app (select k number of topics) generateTopics()
    * Show probability of each topic / sort by probability topicSort()
    * Visualize probaility of each topic e.g with stacked chart per chosen app topicVizual()
-   * Sentiment distribution as a histogram with sentiment scrores across app
-   * Sentiment ratio
-   * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc 
-   * Sentiments stats like Standard Deviation, Min/Max, percentiles
-  
-* Topic modelling 
-   * LDA algorith to extract topics for a chosen app (select k number of topics)
-   * Show probability of each topic / sort by probability 
-   * Visualize probaility of each topic e.g with stacked chart per chosen app
