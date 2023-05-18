@@ -120,12 +120,3 @@ To run the application:
    * LDA algorith to extract topics for a chosen app (select k number of topics) generateTopics()
    * Show probability of each topic / sort by probability topicSort()
    * Visualize probaility of each topic e.g with stacked chart per chosen app topicVizual()
-   * Sentiment distribution as a histogram with sentiment scrores across app
-   * Sentiment ratio
-   * Sentiment by user rating eg. 1 = 0.5, 5 = 0.9 etc 
-   * Sentiments stats like Standard Deviation, Min/Max, percentiles
-  
-* Topic modelling 
-   * LDA algorith to extract topics for a chosen app (select k number of topics)
-   * Show probability of each topic / sort by probability 
-   * Visualize probaility of each topic e.g with stacked chart per chosen app
