@@ -1,3 +1,4 @@
+
 library(shiny)
 library(DT)
 library(revapp)
@@ -21,9 +22,14 @@ ui <- fluidPage(
                                                plotOutput(outputId = "circ"),
                                                DT::dataTableOutput(outputId = "tab_w", width = )
                                       ),
-                                      tabPanel(title = "Word plots", value = 2,
-                                               p("what to put in here?")
-                                      )
+                                      tabPanel(title = "Wordcloud", value = 2,
+                                               p("Most used words associated with app revews")
+                                      ),
+                                      tabPanel(title = "Sentiment Analysis", value = 2,
+                                               p("Average sentiment for the app, sentiments destribution (pie), sentimanetdistribution(histogram),sentiment ratio, sentiments stats, table with reviews and sentiments and score assigned to each")
+                                      ),
+                                      tabPanel(title = "Trending Topics", value = 2,
+                                               p("TOP 10 identified topics"))
     )
     )
   )
