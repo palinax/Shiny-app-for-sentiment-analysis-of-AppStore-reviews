@@ -91,18 +91,23 @@ To run the application:
 
 
 ## Pipeline
-* Text pre-processing textpreProcess()
-    * Convert reviews to lowercase tolower()
-    * Remove numerical digits gsub(), removeNumbers()
-    * Remove punctuation gsub(), removePunctuation()
-    * Tokenize text into individual words word_tokenize()
-    * Remove stopwords stopwords()
-    * Remove words not relevant to sentiment analysis (those left not captured by stopwords) removeWords()
-    * Perform stemming to reduce words to their roots/base stemDocument()
-    * Calculate terms frequency in a given text corpus termFreq()
-    * Remove infrequently appearing items removeSparseTerms()
+reviews$review vector of strings 
+* Text pre-processing textpreProcess() input reviews$review, output: reviews$processesed_reviews (vector of strings)
+   **this func incorporates below functions 
+
+    1. Lowercase the reviews: tolower(reviews$review) output: reviews$processesed_reviews (vector of strings)
+    2. Remove numerical digits & punctuation  gsub("[0-9[:punct:]]", "", reviews$processesed_reviews), output(reviews$processesed_reviews)
+    3. Tokenize text into individual words word_tokenize(reviews$processesed_reviews), output: reviews$processesed_reviews vector of lists of strings. Basically bring tokens for each review back to DataFrame.
+       a. output looks like Row1: 'love','snapchat'.
+                            Row2: 'hate', 'snapchat
+    4.  Remove stopwords remoweWords(reviews$processesed_reviews) output (reviews$processesed_reviews) output: vector of lists of strings. 
+       a. This is part of tm package, if we want to do manually - need to define all stopwords and exclude them from tokenized_reviews. 
+    5. Perform stemming to reduce words to their roots/base stemDocument(reviews$processesed_reviews).Output reviews$processesed_reviews output: vector of lists of strings
+      a. There`s a wordStem() from the SnowballC package as it`s complicated fucntion. It basically reduce word to its root like **bright**ful = bright. 
+
 
 * Wordcloud
+   * Calculate terms frequency in a given text corpus termFreq()
    * Generate word cloud wordCloud()
     
 * Sentiment Analysis sentimentScore() 
