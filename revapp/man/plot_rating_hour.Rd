@@ -7,11 +7,14 @@
 plot_rating_hour(sample_apps_reviews)
 }
 \arguments{
-\item{sample_apps_reviews}{}
+\item{sample_apps_reviews}{data.table}
 }
 \value{
-
+\code{ggplot2} object
 }
 \description{
 Title
+}
+\examples{
+plot_rating_hour(revapp::sample_apps_reviews)
 }

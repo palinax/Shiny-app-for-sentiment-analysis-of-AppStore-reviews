@@ -27,14 +27,16 @@ plot_rating_hour <- function(sample_apps_reviews)
 #' @param oo
 #' @param mn
 #'
-#' @return
+#' @return \code{ggplot2} object
 #' @export
 #'
 #' @examples
 #' plot_word_count(prepare_dt(reviews = sample_apps_reviews))
 plot_word_count <- function(oo, mn = 10)
 {
-    rr <- oo[l != ""][order(-V)][1:mn]
+    checkmate::assert_data_table(oo)
+    checkmate::assert_number(mn, lower = 0)
+    rr <- oo[proc_word != ""][order(-how_many)][1:mn]
     ggplot(data = rr) +
-        geom_col(aes(x = V, y = substr(l, 1, 20)))
+        geom_col(aes(x = how_many, y = substr(proc_word, 1, 20)))
 }
