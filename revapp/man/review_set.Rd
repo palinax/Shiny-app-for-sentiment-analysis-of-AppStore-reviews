@@ -8,7 +8,7 @@
 review_set(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{list of reviews}
 }
 \value{
 
@@ -31,4 +31,7 @@ ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
              FUN = function(i) review(x = i))
 set_review <- review_set(ll)
 set_review
+ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+             FUN = function(i) review(x = i))
+review_set(ll)
 }

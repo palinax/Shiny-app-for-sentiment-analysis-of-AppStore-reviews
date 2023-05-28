@@ -7,11 +7,16 @@
 \S4method{show}{review_set}(object)
 }
 \arguments{
-\item{review_set}{}
+\item{review_set}{object of class review}
 }
 \value{
 
 }
 \description{
 Title
+}
+\examples{
+ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+             FUN = function(i) review(x = i))
+review_set(ll)
 }

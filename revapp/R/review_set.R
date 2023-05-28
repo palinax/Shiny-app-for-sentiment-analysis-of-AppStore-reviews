@@ -22,13 +22,17 @@ setClass(Class = "review_set",
 
 #' Title
 #'
-#' @param x
+#' @param x list of reviews
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+#'              FUN = function(i) review(x = i))
+#' review_set(ll)
 review_set <- function(x) {
+    checkmate::assert_list(x)
     words <- lapply(X = x,
                     FUN = function(i) data.table(proc_word = i@processed))
     words <- rbindlist(words)[, list(how_many = .N), by = "proc_word"]
@@ -40,12 +44,15 @@ review_set <- function(x) {
 
 #' Title
 #'
-#' @param review_set
+#' @param review_set object of class review
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+#'              FUN = function(i) review(x = i))
+#' review_set(ll)
 setMethod(f = "show",
           signature = "review_set",
           definition = function(x) {
@@ -82,23 +89,27 @@ sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf)) {
 }
 
 #' @name review-set-charts
+#' @export
 sentimentDistributionHist <- function(x) {
     hist(x@sent_scores, main = "Sentiment distribution")
 }
 
 #' Title
 #'
-#' @param x
-#' @param br
+#' @param x object of class \code{review-set}
+#' @param br breaks for establish whether review is negative or positive
 #'
-#' @return
+#' @return numeric
 #' @export
+#'
+#' @name review-set-summary
 #'
 #' @examples
 #' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
 #'              FUN = function(i) review(x = i))
 #' set_review <- review_set(ll)
 #' sentimentRatio(set_review)
+#' sentimentSummary(set_review)
 sentimentRatio <- function(x, br = c(-Inf, -.1, .1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)
     res[, lab := as.character(cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive")))]
@@ -106,14 +117,8 @@ sentimentRatio <- function(x, br = c(-Inf, -.1, .1, Inf)) {
     sum(res$lab == "positive") / sum(res$lab == "negative")
 }
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
+#' @rdname review-set-summary
 #' @export
-#'
-#' @examples
 sentimentSummary <- function(x) {
     res <- na.omit(x@sent_scores)
     list(mean = mean(res),
