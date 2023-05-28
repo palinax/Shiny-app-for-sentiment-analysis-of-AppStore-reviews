@@ -33,7 +33,7 @@ To run the application:
 * clone this repo
 * open up the `revapp.Rproj`
 * run `devtools::load_all()`
-* run `shiny::runApp("inst")`
+* run `shiny::runApp("inst", launch.browser = TRUE)`
 
 # How this project complies with the requirements?
 

@@ -10,7 +10,7 @@
 #' @slot sent_score The sentiment score of the review.
 #'
 #' @examples
-#' review <- new("review", original = "This is a great product.")
+#' review <- review("This is a great product.")
 #' review
 #' @export
 setClass(Class = "review",
@@ -20,12 +20,14 @@ setClass(Class = "review",
 
 #' Title
 #'
-#' @param x
+#' @param x character containing review
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' review <- review("This is a great product.")
+#' review
 review <- function(x) {
     prc <- pre_process(x)
     res <- new(Class = "review",
@@ -39,10 +41,11 @@ review <- function(x) {
 #'
 #' @param review
 #'
-#' @return
+#' @return printed message about review
 #' @export
 #'
 #' @examples
+#' review("This is a great product.")
 setMethod(f = "show",
           signature = "review",
           definition = function(x) {
@@ -216,6 +219,5 @@ setMethod(f = "pre_process",
 #' @examples
 sent_score <- function(x) {
     checkmate::assert_character(x)
-    set.seed(1234)
-    mean(runif(length(x), -1, 1))
+    mean(newfinn[match(x = x, table = newfinn$word)]$value, na.rm = TRUE)
 }
