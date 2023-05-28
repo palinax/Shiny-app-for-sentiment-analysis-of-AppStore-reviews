@@ -1,4 +1,4 @@
-#' Sample fo reviews
+#' Sample of reviews
 #'
 #' @format ## `sample_apps_reviews`
 #' A named list of data table with 500 rows and 7 columns each:
@@ -13,3 +13,14 @@
 #' }
 #' @source appler package
 "sample_apps_reviews"
+
+#' Sentiment score usign affin dataset reviews
+#'
+#' @format ## `newfinn`
+#' A data table with 2477 rows and 2 columns:
+#' \describe{
+#'   \item{word}{word}
+#'   \item{value}{sentiment ranges from -5 to 5}
+#' }
+#' @source http://www2.imm.dtu.dk/pubdb/pubs/6010-full.html
+"newfinn"

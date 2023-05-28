@@ -8,7 +8,7 @@
 review(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{character containing review}
 }
 \value{
 
@@ -27,6 +27,8 @@ A class representing a review.
 }}
 
 \examples{
-review <- new("review", original = "This is a great product.")
+review <- review("This is a great product.")
+review
+review <- review("This is a great product.")
 review
 }

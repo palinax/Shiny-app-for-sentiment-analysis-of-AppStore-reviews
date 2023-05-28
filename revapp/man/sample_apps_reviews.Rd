@@ -3,7 +3,7 @@
 \docType{data}
 \name{sample_apps_reviews}
 \alias{sample_apps_reviews}
-\title{Sample fo reviews}
+\title{Sample of reviews}
 \format{
 ## `sample_apps_reviews`
 A named list of data table with 500 rows and 7 columns each:
@@ -24,6 +24,6 @@ appler package
 sample_apps_reviews
 }
 \description{
-Sample fo reviews
+Sample of reviews
 }
 \keyword{datasets}

@@ -10,8 +10,11 @@
 \item{review}{}
 }
 \value{
-
+printed message about review
 }
 \description{
 Title
+}
+\examples{
+review("This is a great product.")
 }
