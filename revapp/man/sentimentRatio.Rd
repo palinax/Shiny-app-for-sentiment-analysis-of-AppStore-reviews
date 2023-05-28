@@ -4,7 +4,7 @@
 \alias{sentimentRatio}
 \title{Title}
 \usage{
-sentimentRatio(x, br = c(-Inf, 0, Inf))
+sentimentRatio(x, br = c(-Inf, -0.1, 0.1, Inf))
 }
 \arguments{
 \item{br}{}
@@ -14,4 +14,8 @@ sentimentRatio(x, br = c(-Inf, 0, Inf))
 }
 \description{
 Title
+}
+\examples{
+set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+sentimentRatio(set_review)
 }

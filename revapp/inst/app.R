@@ -33,7 +33,7 @@ ui <- fluidPage(
                                                  p("In sentiment analysi once you have to decide which values represent which class:"),
                                                  sliderInput(inputId = "sent_breaks",
                                                              label = "Breaks for categories",
-                                                             min = -5,
+                                                             min = -5, step = .1,
                                                              value = c(-.1, .1),
                                                              max = 5))
     ),
@@ -46,8 +46,8 @@ ui <- fluidPage(
                                                fluidRow(column(width = 6, plotOutput("sentpie")),
                                                         column(width = 6, plotOutput("senthist"))),
                                                fluidRow(column(width = 6, textOutput("sentRatio")),
-                                                        column(width = 6, htmlOutput("sentVals"))),
-                                               p("table with reviews and sentiments and score assigned to each")
+                                                        column(width = 6, uiOutput("sentVals"))),
+                                               DT::dataTableOutput(outputId = "sent_table")
                                       ),
                                       tabPanel(title = "Trending Topics", value = 4,
                                                plotOutput("topics"))
@@ -59,7 +59,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   reviewsProcessed <- reactiveVal({NULL})
   # 'Summary' tab ----
-  # displaying modal aobut how to prepare own data
+  # displaying modal about how to prepare own data
   observeEvent(eventExpr = input$show_how,
                handlerExpr = {
                  tt <- readLines(con = "www/modal_how_to_prep.html")
@@ -93,30 +93,46 @@ server <- function(input, output, session) {
   })
   # 'Sentiment' tab ----
   br_p_n <- reactiveVal({c(-Inf, -.1, .1, Inf)})
-  observeEvent(input$sent_breaks, {
-    br_p_n(c(-Inf, input$sent_breaks, Inf))
-  })
+
+  observeEvent(eventExpr = input$sent_breaks,
+               handlerExpr = {
+                 br_p_n(c(-Inf, input$sent_breaks, Inf))
+               })
+
   output$sentpie <- renderPlot({
+    req(reviewsProcessed())
     validate(
       need(min(input$sent_breaks) != max(input$sent_breaks), "Please select a unique breaks")
     )
     sentimentDistributionPie(reviewsProcessed(), br = br_p_n())
   })
-  output$senthist <- renderPlot({sentimentDistributionHist(reviewsProcessed())})
+
+  output$senthist <- renderPlot({
+    req(reviewsProcessed())
+    sentimentDistributionHist(reviewsProcessed())})
+
   output$sentRatio <- renderText({
+    req(reviewsProcessed())
     validate(
       need(min(input$sent_breaks) != max(input$sent_breaks), "Please select a unique breaks")
     )
-    tryCatch(expr = {paste0("Sentiment ratio is: ", sentimentRatio(reviewsProcessed(), br = br_p_n()))}, error = function(e) "Something went wrong")
+    paste0("Sentiment ratio is: ", sentimentRatio(reviewsProcessed(), br = br_p_n()))
   })
+
   output$sentVals <- renderUI({
-    res <- sentimentSummary(reviewsProcessed()@sent_scores)
+    req(reviewsProcessed())
+    res <- sentimentSummary(reviewsProcessed())
     div(
       p(paste0("Mean:", res$mean)),
       p(paste0("SD:", res$sd)),
       p(paste0("Min/max:", res$min, "/", res$max)),
-      p(paste0("Deciles:", res$dec))
+      p(paste0("Deciles:", paste0(res$dec, collapse = ", ")))
     )
+  })
+
+  output$sent_table <- DT::renderDataTable(expr = {
+    rbindlist(l = lapply(reviewsProcessed()@reviews,
+                         FUN = function(i) data.table(review = i@original, score = i@sent_score)))
   })
   # 'Trending topics' tab ----
   output$topics <- renderPlot({plot(1:10, 1:10)})

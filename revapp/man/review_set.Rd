@@ -27,9 +27,6 @@ A class representing a set of reviews.
 }}
 
 \examples{
-review1 <- review("This is a great product.")
-review2 <- review("I'm not satisfied with this product.")
-
-review_set <- review_set(list(review1, review2))
-review_set
+set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+set_review
 }

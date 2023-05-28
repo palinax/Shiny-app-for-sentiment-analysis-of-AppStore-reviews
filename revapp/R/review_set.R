@@ -10,11 +10,8 @@
 #' @slot sent_scores A numeric vector containing the sentiment scores of the reviews.
 #'
 #' @examples
-#' review1 <- review("This is a great product.")
-#' review2 <- review("I'm not satisfied with this product.")
-#'
-#' review_set <- review_set(list(review1, review2))
-#' review_set
+#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+#' set_review
 #' @export
 setClass(Class = "review_set",
          slots = list(reviews = "list",
@@ -65,10 +62,7 @@ setMethod(f = "show",
 #' @rdname review-set-charts
 #'
 #' @examples
-#' review1 <- review("This is a great product.")
-#' review2 <- review("I'm not satisfied with this product.")
-#'
-#' set_review <- review_set(list(review1, review2))
+#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
 #' sentimentDistributionPie(set_review)
 #' sentimentDistributionHist(set_review)
 sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf)) {
@@ -93,10 +87,13 @@ sentimentDistributionHist <- function(x) {
 #' @export
 #'
 #' @examples
-sentimentRatio <- function(x, br = c(-Inf, 0, Inf)) {
+#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+#' sentimentRatio(set_review)
+sentimentRatio <- function(x, br = c(-Inf, -.1, .1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)
-    res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
-    sum(res[lab == "positive"]) / sum(res[lab == "negative"])
+    res[, lab := as.character(cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive")))]
+    res[is.nan(sent_score), lab := "couldn't determine"]
+    sum(res$lab == "positive") / sum(res$lab == "negative")
 }
 
 #' Title

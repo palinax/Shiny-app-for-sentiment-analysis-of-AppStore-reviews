@@ -22,10 +22,7 @@ charts
 Charts for set of reviews
 }
 \examples{
-review1 <- review("This is a great product.")
-review2 <- review("I'm not satisfied with this product.")
-
-set_review <- review_set(list(review1, review2))
+set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
 sentimentDistributionPie(set_review)
 sentimentDistributionHist(set_review)
 }
