@@ -185,13 +185,32 @@ from -1 to 1 (below 0 means negative, 0+ means positive)
     output
         single number
    * Sentiments stats like Standard Deviation, Min/Max, percentile sentimentStats()
-  input
         sentiment score for a multiple reviews (so a numeric vector)
     output
         vector of numbers
         
-* Topic modelling topicModel()
-    to be determined
-   * LDA algorith to extract topics for a chosen app (select k number of topics) generateTopics()
-   * Show probability of each topic / sort by probability topicSort()
-   * Visualize probaility of each topic e.g with stacked chart per chosen app topicVizual()
+* Topic modelling topicModel(input: DocumentTermMatrix, n of topics (k))
+
+* library(topicmodels)
+* library(tm)
+
+   * Input: Pre-processed and tokenized list of lists of strings (or review object we discussed!) needs to be transformed to a document-word matrix, n of topics (let`s choose 3) 
+   * Example how to create document_term_marix 
+   * # Create a list of lists of tokenized strings
+         tokenized_text <- list(
+          c("this", "is", "the", "first", "document"),
+          c("this", "is", "the", "second", "document"))
+# Create a Corpus object from the tokenized text
+corpus <- Corpus(VectorSource(tokenized_text))
+# Create a document-word matrix
+dtm <- DocumentTermMatrix(corpus)
+
+* The output of LDA topic modeling includes:
+
+   * Extracted topics: A set of topics identified by the LDA model, where each topic is represented by a distribution of words with associated probabilities. These topics can provide insights into the main themes or issues discussed in the reviews.
+   * Topic-word distribution: The probability distribution of words within each topic, which indicates the importance of each word in contributing to a specific topic.
+   * Document-topic distribution: The distribution of topics within each app store review, indicating the likelihood of a review belonging to a particular topic.
+   * Topic summaries: A summary of the most probable words associated with each topic, allowing you to interpret and label the topics based on the prominent words.
+
+* Expected output of the app:
+   * Bar plots displaying the top-N words or terms for each topic along with their corresponding probabilities or frequencies. Each topic is represented by a bar chart, with the height of the bars indicating the importance of each word within the topic. Example: pink/green/blue bars: https://rpubs.com/asmi2990/988736
