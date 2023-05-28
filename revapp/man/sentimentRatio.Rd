@@ -16,6 +16,8 @@ sentimentRatio(x, br = c(-Inf, -0.1, 0.1, Inf))
 Title
 }
 \examples{
-set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+             FUN = function(i) review(x = i))
+set_review <- review_set(ll)
 sentimentRatio(set_review)
 }

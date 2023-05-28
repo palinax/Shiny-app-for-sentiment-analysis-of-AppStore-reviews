@@ -50,7 +50,8 @@ setMethod(f = "show",
           signature = "review",
           definition = function(x) {
               message(paste0("original: ", x@original, "\n"))
-              message(paste0("processed: '", paste0(x@processed, collapse = "', '"), "'\n"))
+              message(paste0("processed: '",
+                             paste0(x@processed, collapse = "', '"), "'\n"))
           })
 
 #' Title

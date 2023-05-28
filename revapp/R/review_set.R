@@ -10,7 +10,9 @@
 #' @slot sent_scores A numeric vector containing the sentiment scores of the reviews.
 #'
 #' @examples
-#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+#'              FUN = function(i) review(x = i))
+#' set_review <- review_set(ll)
 #' set_review
 #' @export
 setClass(Class = "review_set",
@@ -27,7 +29,8 @@ setClass(Class = "review_set",
 #'
 #' @examples
 review_set <- function(x) {
-    words <- lapply(X = x, FUN = function(i) data.table(proc_word = i@processed))
+    words <- lapply(X = x,
+                    FUN = function(i) data.table(proc_word = i@processed))
     words <- rbindlist(words)[, list(how_many = .N), by = "proc_word"]
     new(Class = "review_set",
         reviews = x,
@@ -47,8 +50,11 @@ setMethod(f = "show",
           signature = "review_set",
           definition = function(x) {
               message(paste0("Number of reviews: ", length(x@reviews), "\n"))
-              message(paste0("Most common words: '", paste0(x@words[order(-how_many)]$proc_word[1:3], collapse = "', '"), "'\n"))
-              message(paste0("Mean sentiment score (standard deviation): ", mean(x@sent_scores, na.rm = T), " (", sd(x@sent_scores, na.rm = T), ")\n"))
+              message(paste0("Most common words: '",
+                             paste0(x@words[order(-how_many)]$proc_word[1:3], collapse = "', '"), "'\n"))
+              message(paste0("Mean sentiment score (standard deviation): ",
+                             mean(x@sent_scores, na.rm = T), " (",
+                             sd(x@sent_scores, na.rm = T), ")\n"))
           })
 
 #' Charts for set of reviews
@@ -62,14 +68,16 @@ setMethod(f = "show",
 #' @rdname review-set-charts
 #'
 #' @examples
-#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+#'              FUN = function(i) review(x = i))
+#' set_review <- review_set(ll)
 #' sentimentDistributionPie(set_review)
 #' sentimentDistributionHist(set_review)
 sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)
     res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
     res[is.nan(sent_score), lab := "couldn't determine"]
-    res <- res[,.(l = .N), by = "lab"]
+    res <- res[, list(l = .N), by = "lab"]
     pie(res$l, labels = res$lab, main = "Sentiment distribution")
 }
 
@@ -87,7 +95,9 @@ sentimentDistributionHist <- function(x) {
 #' @export
 #'
 #' @examples
-#' set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(x = i)))
+#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+#'              FUN = function(i) review(x = i))
+#' set_review <- review_set(ll)
 #' sentimentRatio(set_review)
 sentimentRatio <- function(x, br = c(-Inf, -.1, .1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)

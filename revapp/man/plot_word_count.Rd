@@ -18,6 +18,8 @@ plot_word_count(oo, mn = 10)
 Title
 }
 \examples{
-set_review <- review_set(lapply(X = sample_apps_reviews$Snapchat$review[1:10], FUN = function(i) review(i)))
+ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+             FUN = function(i) review(i))
+set_review <- review_set(ll)
 plot_word_count(set_review@words)
 }
