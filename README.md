@@ -37,7 +37,7 @@ To run the application:
 
 # How this project complies with the requirements?
 
-Writing own advanced functions in R (including defensive programming)
+1. Writing own advanced functions in R (including defensive programming)
     
     As far as the defensive programing oges, our functions includes wide range of assertions of the parameters.
     To do: 
@@ -91,28 +91,54 @@ Writing own advanced functions in R (including defensive programming)
 
 
 ## Pipeline
+
+reviews - data.frame
+textPreProcess(x)
+    review data.frame
+    steps
+        reviews$processesed_reviews <- tolower(x) //toloweer works on a character vector
+        reviews$processesed_reviews <- remove_numerical_and_punct(x)
+        tokenizedRewies <- word_tokenize(reviews$processesed_reviews)
+        remoweWords(tokenizedRewies)
+
 reviews$review vector of strings 
 * Text pre-processing textpreProcess() input reviews$review, output: reviews$processesed_reviews (vector of lists of strings)
    * this func incorporates below functions 
 
-    * Lowercase the reviews: tolower(reviews$review) output: reviews$processesed_reviews (vector of strings)
+    * Lowercase the reviews: tolower(reviews$review) output: reviews$processesed_reviews (vector of strings) ()
+        x - character vector
     * Remove numerical digits & punctuation  gsub("[0-9[:punct:]]", "", reviews$processesed_reviews), output(reviews$processesed_reviews)
+        remove_numerical_and_punct
+            x - character vector
     * Tokenize text into individual words word_tokenize(reviews$processesed_reviews), output: reviews$processesed_reviews vector of lists of strings. Basically bring tokens for each review back to DataFrame.
+       
        a. output looks like Row1: 'love','snapchat'.
                             Row2: 'hate', 'snapchat
     *  Remove stopwords remoweWords(reviews$processesed_reviews) output (reviews$processesed_reviews) output: vector of lists of strings. 
+    remoweWords
        a. This is part of tm package, if we want to do manually - need to define all stopwords and exclude them from tokenized_reviews. 
     * Perform stemming to reduce words to their roots/base stemDocument(reviews$processesed_reviews).Output reviews$processesed_reviews output: vector of lists of strings
       a. There`s a wordStem() from the SnowballC package as it`s complicated fucntion. It basically reduce word to its root like **bright**ful = bright. 
 
+output of text_process() is an object that has
+@orignal_reviews
+@tokenize_rewiews
+@vector_of_words / summary_words
 
 * Wordcloud
    * For wordclout, we first need to flatten reviews i.e. to create a single combined vector of words and their frequencies 
    * Calculate terms frequency in a given text corpus termFreq()
    * Generate word cloud wordCloud(combined_reviews, word_freqs)
 
+wordcloud_fun(x)
+    x is an ouptut from text_process()
+    agrragate the words
+    computes the words location
+    returns a plot
+
 Example:
 
+```
 library(wordcloud)
 
 # Flatten your list of lists into a single vector of words
@@ -121,28 +147,51 @@ combined_reviews <- unlist(reviews$processesed_reviews)
 word_freqs <- table(combined_reviews)
 # Generate the word cloud
 wordcloud(names(combined_reviews), freq = word_freqs)
-    
+```
+
 * Sentiment Analysis sentimentScore() 
+    sentimentScore()
+        it calcualtes the sentimetn of a review
+        x is a whole review
+        returns a number
 
 Vector of strings needs to be an input to sentiment analysis. 
 
 Example: library(syuzhet)
 
-# apply get_sentiment() to the review column
+# apply syuzhet::get_sentiment() to the review column
 reviews$processed_reviews <- as.character(reviews$processed_reviews)
 sentiment_scores <- get_sentiment(reviews$processed_reviews)
+from -1 to 1 (below 0 means negative, 0+ means positive)
 
     * Assign sentiment scores to the pre-processed text per each review assignScores(reviews$processed_reviews) output sentiment_scores, not sure what`s exact output need to run code
     * Calculate average sentiment for the app averageSentiment(). Need to sum sentiment scores and divide by len(reviews$processed_reviews) and display on app
     * Dispaly on app table with reviews with sentiments score & sentiments assigned. It is a DF with reviews and added column with scores 
    
-* Sentiment Visualisations sentimentVizual()
-   * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral sentimentDistributionPie()
+* Sentiment Analysis 
+    * Sentiment distribution for a chosen app pie chart with count / percentage of positive, negative, neutral sentimentDistributionPie()
+    input
+        sentiment score for a multiple reviews (so a numeric vector)
+    output
+        plot piechart
    * Sentiment distribution as a histogram with sentiment scrores across app sentimentDistributionHist() 
-   * Sentiment ratio sentimentRatio() 
+    input
+        sentiment score for a multiple reviews (so a numeric vector)
+    output
+        histogram of it
+   * Sentiment ratio sentimentRatio()
+   input
+        sentiment score for a multiple reviews (so a numeric vector)
+    output
+        single number
    * Sentiments stats like Standard Deviation, Min/Max, percentile sentimentStats()
-  
+  input
+        sentiment score for a multiple reviews (so a numeric vector)
+    output
+        vector of numbers
+        
 * Topic modelling topicModel()
+    to be determined
    * LDA algorith to extract topics for a chosen app (select k number of topics) generateTopics()
    * Show probability of each topic / sort by probability topicSort()
    * Visualize probaility of each topic e.g with stacked chart per chosen app topicVizual()
