@@ -23,7 +23,19 @@ ui <- fluidPage(
                                                  actionButton(inputId = "btn_proceed",
                                                               label = "Proceed!", icon = icon("cog"))),
                                 conditionalPanel(condition = "input.tab==2",
-                                                 h2("inputs for word plots, for example minimum word freq, color pallette"))
+                                                 p("You can modify several things:"),
+                                                 sliderInput(inputId = "word_cloud_max_words",
+                                                             label = "Maximum number of words",
+                                                             min = 1,
+                                                             value = 10,
+                                                             max = 20)),
+                                conditionalPanel(condition = "input.tab==3",
+                                                 p("In sentiment analysi once you have to decide which values represent which class:"),
+                                                 sliderInput(inputId = "sent_breaks",
+                                                             label = "Breaks for categories",
+                                                             min = -5,
+                                                             value = c(-.1, .1),
+                                                             max = 5))
     ),
     mainPanel = mainPanel(tabsetPanel(id = "tab",
                                       summary_ui(),
@@ -31,8 +43,11 @@ ui <- fluidPage(
                                                plotOutput(outputId = "wordcloud")
                                       ),
                                       tabPanel(title = "Sentiment Analysis", value = 3,
-                                               plotOutput("sentpie"),
-                                               p("Average sentiment for the app, sentiments destribution (pie), sentimanetdistribution(histogram),sentiment ratio, sentiments stats, table with reviews and sentiments and score assigned to each")
+                                               fluidRow(column(width = 6, plotOutput("sentpie")),
+                                                        column(width = 6, plotOutput("senthist"))),
+                                               fluidRow(column(width = 6, textOutput("sentRatio")),
+                                                        column(width = 6, htmlOutput("sentVals"))),
+                                               p("table with reviews and sentiments and score assigned to each")
                                       ),
                                       tabPanel(title = "Trending Topics", value = 4,
                                                plotOutput("topics"))
@@ -65,15 +80,44 @@ server <- function(input, output, session) {
                handlerExpr = {
                  isolate(expr = {
                    withProgress(expr = {
-                     reviewsProcessed(review(filtered_reviews()$review[1]))
+                     l = lapply(X = filtered_reviews()$review, FUN = function(i) review(i))
+                     reviewsProcessed(review_set(l))
                    }, message = "Processing reviews")
                  })
-                 showModal(ui = modalDialog(title = "Done!", "Now you can go to other tabs and explore it further!"))
+                 showModal(ui = modalDialog(title = "Done!", "Now you can go to other tabs and explore it further!", div(print(reviewsProcessed))))
                })
   # 'Wordcloud' tab ----
-  output$wordcloud <- renderPlot({plot(1:10, 1:10)})
+  output$wordcloud <- renderPlot({
+    req(reviewsProcessed())
+    plot_word_count(reviewsProcessed()@words, input$word_cloud_max_words)
+  })
   # 'Sentiment' tab ----
-  output$sentpie <- renderPlot({plot(1:10, 1:10)})
+  br_p_n <- reactiveVal({c(-Inf, -.1, .1, Inf)})
+  observeEvent(input$sent_breaks, {
+    br_p_n(c(-Inf, input$sent_breaks, Inf))
+  })
+  output$sentpie <- renderPlot({
+    validate(
+      need(min(input$sent_breaks) != max(input$sent_breaks), "Please select a unique breaks")
+    )
+    sentimentDistributionPie(reviewsProcessed(), br = br_p_n())
+  })
+  output$senthist <- renderPlot({sentimentDistributionHist(reviewsProcessed())})
+  output$sentRatio <- renderText({
+    validate(
+      need(min(input$sent_breaks) != max(input$sent_breaks), "Please select a unique breaks")
+    )
+    tryCatch(expr = {paste0("Sentiment ratio is: ", sentimentRatio(reviewsProcessed(), br = br_p_n()))}, error = function(e) "Something went wrong")
+  })
+  output$sentVals <- renderUI({
+    res <- sentimentSummary(reviewsProcessed()@sent_scores)
+    div(
+      p(paste0("Mean:", res$mean)),
+      p(paste0("SD:", res$sd)),
+      p(paste0("Min/max:", res$min, "/", res$max)),
+      p(paste0("Deciles:", res$dec))
+    )
+  })
   # 'Trending topics' tab ----
   output$topics <- renderPlot({plot(1:10, 1:10)})
 }
