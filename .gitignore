@@ -3,11 +3,17 @@
 !README.md
 !revapp/
 !revapp/data/
+!revapp/data/*.*
 !revapp/data-raw/
+!revapp/data-raw/*.*
 !revapp/inst/
+!revapp/inst/*.*
 !revapp/man/
+!revapp/man/*.Rd
 !revapp/R/
+!revapp/R/*.R
 !revapp/tests/
+!revapp/tests/*.*
 !revapp/.Rbuildignore
 !revapp/DESCRIPTION
 !revapp/NAMESPACE

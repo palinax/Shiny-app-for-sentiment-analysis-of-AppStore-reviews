@@ -13,7 +13,12 @@ RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10),
     ggplot2,
-    data.table
+    data.table,
+    DT,
+    shiny,
+    tm,
+    SnowballC,
+    methods
 Imports:
     checkmate
 Suggests: 

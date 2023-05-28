@@ -7,5 +7,8 @@
 #' @import shiny
 #' @import ggplot2
 #' @import DT
+#' @import tm
+#' @import SnowballC
+#' @import methods
 ## usethis namespace: end
 NULL

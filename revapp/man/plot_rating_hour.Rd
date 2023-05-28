@@ -4,10 +4,10 @@
 \alias{plot_rating_hour}
 \title{Title}
 \usage{
-plot_rating_hour(sample_apps_reviews)
+plot_rating_hour(dt)
 }
 \arguments{
-\item{sample_apps_reviews}{data.table}
+\item{dt}{data.table}
 }
 \value{
 \code{ggplot2} object
@@ -16,5 +16,5 @@ plot_rating_hour(sample_apps_reviews)
 Title
 }
 \examples{
-plot_rating_hour(revapp::sample_apps_reviews)
+plot_rating_hour(sample_apps_reviews[[1]])
 }
