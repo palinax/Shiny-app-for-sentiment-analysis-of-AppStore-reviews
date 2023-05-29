@@ -23,6 +23,7 @@ ui <- fluidPage(
                                                  actionButton(inputId = "btn_proceed",
                                                               label = "Proceed!", icon = icon("cog"))),
                                 conditionalPanel(condition = "input.tab==2",
+                                                 h2("Next, look at the words"),
                                                  p("You can modify several things:"),
                                                  sliderInput(inputId = "word_cloud_max_words",
                                                              label = "Maximum number of words",
@@ -30,12 +31,16 @@ ui <- fluidPage(
                                                              value = 10,
                                                              max = 20)),
                                 conditionalPanel(condition = "input.tab==3",
-                                                 p("In sentiment analysi once you have to decide which values represent which class:"),
+                                                 h2("Furthermore: sentiment analysis"),
+                                                 p("Decide which values represent which class:"),
                                                  sliderInput(inputId = "sent_breaks",
                                                              label = "Breaks for categories",
                                                              min = -5, step = .1,
                                                              value = c(-.1, .1),
-                                                             max = 5))
+                                                             max = 5),
+                                                 selectInput(inputId = "sent_colors",
+                                                             label = "Colors for categories",
+                                                             choices = rownames(RColorBrewer::brewer.pal.info)))
     ),
     mainPanel = mainPanel(tabsetPanel(id = "tab",
                                       summary_ui(),
@@ -104,7 +109,7 @@ server <- function(input, output, session) {
     validate(
       need(min(input$sent_breaks) != max(input$sent_breaks), "Please select a unique breaks")
     )
-    sentimentDistributionPie(reviewsProcessed(), br = br_p_n())
+    sentimentDistributionPie(reviewsProcessed(), br = br_p_n(), color = RColorBrewer::brewer.pal(4, input$sent_colors))
   })
 
   output$senthist <- renderPlot({
@@ -131,8 +136,13 @@ server <- function(input, output, session) {
   })
 
   output$sent_table <- DT::renderDataTable(expr = {
-    rbindlist(l = lapply(reviewsProcessed()@reviews,
+    res <- rbindlist(l = lapply(reviewsProcessed()@reviews,
                          FUN = function(i) data.table(review = i@original, score = i@sent_score)))
+    cols <- RColorBrewer::brewer.pal(4, input$sent_colors)
+    resDt <- datatable(data = res, rownames = F, caption = "Review with sentiment score")
+    resDt <- DT::formatStyle(table = resDt, columns = "score", target = "row",
+                             backgroundColor = styleInterval(cuts = br_p_n()[-1], values = cols))
+    resDt
   })
   # 'Trending topics' tab ----
   output$topics <- renderPlot({plot(1:10, 1:10)})

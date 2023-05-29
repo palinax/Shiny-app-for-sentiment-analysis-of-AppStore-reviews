@@ -6,7 +6,7 @@
 \alias{sentimentDistributionHist}
 \title{Charts for set of reviews}
 \usage{
-sentimentDistributionPie(x, br = c(-Inf, -0.1, 0.1, Inf))
+sentimentDistributionPie(x, br = c(-Inf, -0.1, 0.1, Inf), colors)
 
 sentimentDistributionHist(x)
 }
@@ -14,6 +14,8 @@ sentimentDistributionHist(x)
 \item{x}{object of class \code{review-set}}
 
 \item{br}{breaks for establish whether review is negative or positive}
+
+\item{colors}{colors for categories}
 }
 \value{
 charts

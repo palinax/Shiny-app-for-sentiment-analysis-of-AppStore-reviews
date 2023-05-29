@@ -68,6 +68,7 @@ setMethod(f = "show",
 #'
 #' @param x object of class \code{review-set}
 #' @param br breaks for establish whether review is negative or positive
+#' @param colors colors for categories
 #'
 #' @return charts
 #' @export
@@ -80,18 +81,22 @@ setMethod(f = "show",
 #' set_review <- review_set(ll)
 #' sentimentDistributionPie(set_review)
 #' sentimentDistributionHist(set_review)
-sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf)) {
+sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf), colors) {
     res <- data.table(sent_score = x@sent_scores)
     res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
     res[is.nan(sent_score), lab := "couldn't determine"]
     res <- res[, list(l = .N), by = "lab"]
-    pie(res$l, labels = res$lab, main = "Sentiment distribution")
+    pie(res$l, labels = res$lab, main = "Sentiment distribution", col = colors)
 }
 
 #' @name review-set-charts
 #' @export
 sentimentDistributionHist <- function(x) {
-    hist(x@sent_scores, main = "Sentiment distribution")
+    ggplot(data = data.table(x = x@sent_scores)) +
+        geom_histogram(aes(x = x)) +
+        labs(title = "Sentiment distribution") +
+        theme_minimal() +
+        coord_cartesian(xlim = c(-5.1, 5.1))
 }
 
 #' Title
