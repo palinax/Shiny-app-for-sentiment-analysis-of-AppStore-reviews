@@ -10,5 +10,6 @@
 #' @import tm
 #' @import SnowballC
 #' @import methods
+#' @import topicmodels
 ## usethis namespace: end
 NULL

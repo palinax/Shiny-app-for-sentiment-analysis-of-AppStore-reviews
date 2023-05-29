@@ -40,7 +40,14 @@ ui <- fluidPage(
                                                              max = 5),
                                                  selectInput(inputId = "sent_colors",
                                                              label = "Colors for categories",
-                                                             choices = rownames(RColorBrewer::brewer.pal.info)))
+                                                             choices = rownames(RColorBrewer::brewer.pal.info))),
+                                conditionalPanel(condition = "input.tab==4",
+                                                 h2("Last but not least - topic modelling"),
+                                                 sliderInput(inputId = "topic_no_topics",
+                                                             label = "Number of topic", min = 2, max = 10, step = 1, value = 2),
+                                                 selectInput(inputId = "topic_method", label = "Method",
+                                                             choices = c("Gibbs", "VEM"), multiple = FALSE),
+                                                 actionButton(inputId = "topic_go", label = "Go!", icon = icon("pen")))
     ),
     mainPanel = mainPanel(tabsetPanel(id = "tab",
                                       summary_ui(),
@@ -137,7 +144,7 @@ server <- function(input, output, session) {
 
   output$sent_table <- DT::renderDataTable(expr = {
     res <- rbindlist(l = lapply(reviewsProcessed()@reviews,
-                         FUN = function(i) data.table(review = i@original, score = i@sent_score)))
+                                FUN = function(i) data.table(review = i@original, score = i@sent_score)))
     cols <- RColorBrewer::brewer.pal(4, input$sent_colors)
     resDt <- datatable(data = res, rownames = F, caption = "Review with sentiment score")
     resDt <- DT::formatStyle(table = resDt, columns = "score", target = "row",
@@ -145,7 +152,34 @@ server <- function(input, output, session) {
     resDt
   })
   # 'Trending topics' tab ----
-  output$topics <- renderPlot({plot(1:10, 1:10)})
+  topicRes <- reactiveVal(NULL)
+  observeEvent(eventExpr = input$topic_go,
+               handlerExpr = {
+                 tokenized_text <- lapply(X = reviewsProcessed()@reviews,
+                                          FUN = function(i) {
+                                            res <- i@processed
+                                            res <- res[nchar(res) > 0]
+                                            res
+                                          })
+                 corpus <- Corpus(VectorSource(tokenized_text))
+                 dtm <- DocumentTermMatrix(corpus, control = list(removePunctuation = TRUE))
+                 tryCatch(expr = {
+                   lda_out <- LDA(x = dtm,
+                                  k = isolate(input$topic_no_topics),
+                                  method = isolate(input$topic_method),
+                                  control = list(seed = 1234))
+                 }, error = function(e) {
+                   showModal(modalDialog(title = "Something went wrong", as.character(e)))
+                 })
+
+                 topicRes(lda_out)
+               })
+  output$topics <- renderPlot({
+    req(topicRes())
+    ggplot(data = get_top_from_lda(topicRes(), tt = 10), aes(x = beta, y = term)) +
+      geom_col() +
+      facet_wrap(~topic)
+  })
 }
 
 shinyApp(ui, server)

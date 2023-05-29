@@ -78,6 +78,7 @@ setGeneric(name = "word_tokenize",
 setMethod(f = "word_tokenize",
           signature = "character",
           definition = function(x) {
+              x <- gsub(pattern = "n’t", replacement = "n not", x = x)
               unlist(strsplit(x = x, split = "\\s"))
           })
 
@@ -188,6 +189,8 @@ setMethod(f = "pre_process",
           signature = "character",
           definition = function(x) {
               checkmate::assert_character(x)
+              # remove emojis
+              x <- gsub("[^\x01-\x7F]", "", x)
               x <- tolower(x)
               x <- remove_numerical_and_punct(x)
               x <- word_tokenize(x)
@@ -221,4 +224,23 @@ setMethod(f = "pre_process",
 sent_score <- function(x) {
     checkmate::assert_character(x)
     mean(newfinn[match(x = x, table = newfinn$word)]$value, na.rm = TRUE)
+}
+
+#' Title
+#'
+#' @param lda_out
+#' @param tt
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_top_from_lda <- function(lda_out, tt) {
+    oo <- data.table(t(lda_out@beta))
+    oo[, term := lda_out@terms]
+    oo <- melt(oo, id.vars = "term")
+    oo <- oo[order(variable, -value)]
+    oo[, i := 1]
+    oo[, i := cumsum(i), by = "variable"]
+    oo[i < tt,.(topic = variable, term, beta = exp(value))][]
 }

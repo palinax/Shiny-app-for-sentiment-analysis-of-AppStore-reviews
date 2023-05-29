@@ -11,16 +11,17 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Depends: 
-    R (>= 2.10),
-    ggplot2,
     data.table,
     DT,
-    shiny,
+    ggplot2,
+    R (>= 2.10),
     tm,
-    SnowballC,
-    methods
+    topicmodels,
+    shiny,
+    SnowballC
 Imports:
-    checkmate
+    checkmate,
+    methods
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
