@@ -11,7 +11,7 @@
 #' plot_rating_hour(sample_apps_reviews[[1]])
 plot_rating_hour <- function(dt,
                              lw_col = "blue",
-                             hgh_col = "red=") {
+                             hgh_col = "red") {
     checkmate::assert_data_table(dt)
     oo <- dt[, list(rating = mean(rating), .N),
              by = .(review_time = hour(review_time))]

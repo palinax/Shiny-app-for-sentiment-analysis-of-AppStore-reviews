@@ -54,27 +54,23 @@ setMethod(f = "show",
                              paste0(x@processed, collapse = "', '"), "'\n"))
           })
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setGeneric(name = "word_tokenize",
            def = function(x) {
                standardGeneric(f = "word_tokenize")
            })
 
-#' Title
+#' Tokenize words in a character string
 #'
-#' @param character
+#' This method tokenizes the words in a character string by splitting it on whitespace and handling contractions.
 #'
-#' @return
+#' @param x A character string.
+#'
+#' @return A character vector of individual words.
 #' @export
-#'
+#' @method word_tokenize character
 #' @examples
+#' word_tokenize("I don't like it")
 setMethod(f = "word_tokenize",
           signature = "character",
           definition = function(x) {
@@ -82,54 +78,26 @@ setMethod(f = "word_tokenize",
               unlist(strsplit(x = x, split = "\\s"))
           })
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setGeneric(name = "remove_numerical_and_punct",
            def = function(x) {
                standardGeneric(f = "remove_numerical_and_punct")
            })
 
-#' Title
-#'
-#' @param character
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod(f = "remove_numerical_and_punct",
           signature = "character",
           definition = function(x) {
               gsub("[0-9[:punct:]]", " ", x)
           })
 
-#' Title
-#'
-#' @param x
-#'
 #' @return
-#' @export
-#'
-#' @examples
 setGeneric(name = "remove_stop_words",
            def = function(x) {
                standardGeneric(f = "remove_stop_words")
            })
 
-#' Title
-#'
-#' @param character
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod(f = "remove_stop_words",
           signature = "character",
           definition = function(x) {

@@ -2,16 +2,19 @@
 % Please edit documentation in R/review.R
 \name{word_tokenize,character-method}
 \alias{word_tokenize,character-method}
-\title{Title}
+\title{Tokenize words in a character string}
 \usage{
 \S4method{word_tokenize}{character}(x)
 }
 \arguments{
-\item{character}{}
+\item{x}{A character string.}
 }
 \value{
-
+A character vector of individual words.
 }
 \description{
-Title
+This method tokenizes the words in a character string by splitting it on whitespace and handling contractions.
+}
+\examples{
+word_tokenize("I don't like it")
 }

@@ -4,7 +4,7 @@
 \alias{plot_rating_hour}
 \title{Title}
 \usage{
-plot_rating_hour(dt, lw_col = "blue", hgh_col = "red=")
+plot_rating_hour(dt, lw_col = "blue", hgh_col = "red")
 }
 \arguments{
 \item{dt}{data.table}
