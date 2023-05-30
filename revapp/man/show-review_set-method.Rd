@@ -2,7 +2,7 @@
 % Please edit documentation in R/review_set.R
 \name{show,review_set-method}
 \alias{show,review_set-method}
-\title{Title}
+\title{Show method for 'review_set'}
 \usage{
 \S4method{show}{review_set}(object)
 }
@@ -13,10 +13,8 @@
 
 }
 \description{
-Title
+Show method for 'review_set'
 }
 \examples{
-ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-             FUN = function(i) review(x = i))
-review_set(ll)
+review_set_example()
 }

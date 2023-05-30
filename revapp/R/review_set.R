@@ -20,7 +20,7 @@ setClass(Class = "review_set",
                       words = "data.table",
                       sent_scores = "numeric"))
 
-#' Title
+#' Constructor of 'review_set' class
 #'
 #' @param x list of reviews
 #'
@@ -42,7 +42,20 @@ review_set <- function(x) {
         sent_scores = unlist(lapply(X = x, FUN = function(i) i@sent_score)))
 }
 
-#' Title
+#' Example of 'review_set' class
+#'
+#' @return object of class 'review_set'
+#' @export
+#'
+#' @examples
+#' review_set_example()
+review_set_example <- function() {
+    ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
+                 FUN = function(i) review(x = i))
+    review_set(ll)
+}
+
+#' Show method for 'review_set'
 #'
 #' @param review_set object of class review
 #'
@@ -50,9 +63,7 @@ review_set <- function(x) {
 #' @export
 #'
 #' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(x = i))
-#' review_set(ll)
+#' review_set_example()
 setMethod(f = "show",
           signature = "review_set",
           definition = function(x) {
@@ -64,24 +75,26 @@ setMethod(f = "show",
                              sd(x@sent_scores, na.rm = T), ")\n"))
           })
 
-#' Charts for set of reviews
+#' Set of functions for summary of 'review_set' class in terms of sentiment
 #'
 #' @param x object of class \code{review-set}
 #' @param br breaks for establish whether review is negative or positive
 #' @param colors colors for categories
 #'
-#' @return charts
+#' @return charts, number and texts summarizing sentiment in a given set of
+#' reviews
 #' @export
 #'
-#' @rdname review-set-charts
+#' @rdname review-set-summary
 #'
 #' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(x = i))
-#' set_review <- review_set(ll)
-#' sentimentDistributionPie(set_review)
-#' sentimentDistributionHist(set_review)
-sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf), colors) {
+#' sentimentDistributionPie(review_set_example())
+#' sentimentDistributionHist(review_set_example())
+#' sentimentRatio(review_set_example())
+#' sentimentSummary(review_set_example())
+sentimentDistributionPie <- function(x,
+                                     br = c(-Inf, -0.1, 0.1, Inf),
+                                     colors = c("blue", "red", "green", "white")) {
     res <- data.table(sent_score = x@sent_scores)
     res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
     res[is.nan(sent_score), lab := "couldn't determine"]
@@ -89,7 +102,7 @@ sentimentDistributionPie <- function(x, br = c(-Inf, -0.1, 0.1, Inf), colors) {
     pie(res$l, labels = res$lab, main = "Sentiment distribution", col = colors)
 }
 
-#' @name review-set-charts
+#' @name review-set-summary
 #' @export
 sentimentDistributionHist <- function(x) {
     ggplot(data = data.table(x = x@sent_scores)) +
@@ -99,31 +112,18 @@ sentimentDistributionHist <- function(x) {
         coord_cartesian(xlim = c(-5.1, 5.1))
 }
 
-#' Title
-#'
-#' @param x object of class \code{review-set}
-#' @param br breaks for establish whether review is negative or positive
-#'
-#' @return numeric
 #' @export
-#'
 #' @name review-set-summary
-#'
-#' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(x = i))
-#' set_review <- review_set(ll)
-#' sentimentRatio(set_review)
-#' sentimentSummary(set_review)
-sentimentRatio <- function(x, br = c(-Inf, -.1, .1, Inf)) {
+sentimentRatio <- function(x,
+                           br = c(-Inf, -.1, .1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)
     res[, lab := as.character(cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive")))]
     res[is.nan(sent_score), lab := "couldn't determine"]
     sum(res$lab == "positive") / sum(res$lab == "negative")
 }
 
-#' @rdname review-set-summary
 #' @export
+#' @name review-set-summary
 sentimentSummary <- function(x) {
     res <- na.omit(x@sent_scores)
     list(mean = mean(res),
