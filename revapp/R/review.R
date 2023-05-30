@@ -226,21 +226,22 @@ sent_score <- function(x) {
     mean(newfinn[match(x = x, table = newfinn$word)]$value, na.rm = TRUE)
 }
 
-#' Title
+#' Getting top topics from LDA
 #'
-#' @param lda_out
-#' @param tt
+#' @param lda_out object from LDA
+#' @param no_top number of top words for topic
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_top_from_lda <- function(lda_out, tt) {
+get_top_from_lda <- function(lda_out, no_top) {
+    checkmate::assert_number(no_top, lower = 1)
     oo <- data.table(t(lda_out@beta))
     oo[, term := lda_out@terms]
     oo <- melt(oo, id.vars = "term")
     oo <- oo[order(variable, -value)]
     oo[, i := 1]
     oo[, i := cumsum(i), by = "variable"]
-    oo[i < tt,.(topic = variable, term, beta = exp(value))][]
+    oo[i < no_top,.(topic = variable, term, beta = exp(value))][]
 }

@@ -2,16 +2,18 @@
 % Please edit documentation in R/review.R
 \name{get_top_from_lda}
 \alias{get_top_from_lda}
-\title{Title}
+\title{Getting top topics from LDA}
 \usage{
-get_top_from_lda(lda_out, tt)
+get_top_from_lda(lda_out, no_top)
 }
 \arguments{
-\item{tt}{}
+\item{lda_out}{object from LDA}
+
+\item{no_top}{number of top words for topic}
 }
 \value{
 
 }
 \description{
-Title
+Getting top topics from LDA
 }
