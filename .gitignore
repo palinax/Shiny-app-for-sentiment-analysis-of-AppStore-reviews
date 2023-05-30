@@ -7,7 +7,9 @@
 !revapp/data-raw/
 !revapp/data-raw/*.*
 !revapp/inst/
-!revapp/inst/*.*
+!revapp/inst/*.R
+!revapp/inst/www/
+!revapp/inst/www/*.*
 !revapp/man/
 !revapp/man/*.Rd
 !revapp/R/
