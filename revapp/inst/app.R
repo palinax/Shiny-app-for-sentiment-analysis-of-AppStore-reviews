@@ -155,28 +155,20 @@ server <- function(input, output, session) {
   topicRes <- reactiveVal(NULL)
   observeEvent(eventExpr = input$topic_go,
                handlerExpr = {
-                 tokenized_text <- lapply(X = reviewsProcessed()@reviews,
-                                          FUN = function(i) {
-                                            res <- i@processed
-                                            res <- res[nchar(res) > 0]
-                                            res
-                                          })
-                 corpus <- Corpus(VectorSource(tokenized_text))
-                 dtm <- DocumentTermMatrix(corpus, control = list(removePunctuation = TRUE))
                  tryCatch(expr = {
-                   lda_out <- LDA(x = dtm,
-                                  k = isolate(input$topic_no_topics),
-                                  method = isolate(input$topic_method),
-                                  control = list(seed = 1234))
+                   lda_out <- get_topic_reviews(reviews = reviewsProcessed()@reviews,
+                                                no_topics = isolate(input$topic_no_topics),
+                                                method = isolate(input$topic_method))
+                   topicRes(lda_out)
                  }, error = function(e) {
                    showModal(modalDialog(title = "Something went wrong", as.character(e)))
                  })
-
-                 topicRes(lda_out)
                })
+
   output$topics <- renderPlot({
     req(topicRes())
-    ggplot(data = get_top_from_lda(topicRes(), no_top = 10), aes(x = beta, y = term)) +
+    ggplot(data = get_top_from_lda(topicRes(), no_top = 10),
+           mapping = aes(x = beta, y = term)) +
       geom_col() +
       facet_wrap(~topic)
   })
