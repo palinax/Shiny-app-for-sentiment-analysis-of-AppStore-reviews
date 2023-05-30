@@ -19,6 +19,15 @@ ui <- fluidPage(
                                                                 min = "2023-01-01",
                                                                 end = Sys.Date(),
                                                                 max = Sys.Date()),
+                                                 p("You can chose coloring based on rating"),
+                                                 selectInput(inputId = "rat_low_color",
+                                                             label = "High rating:",
+                                                             choices = hcl.colors(10)[1:5],
+                                                             multiple = F),
+                                                 selectInput(inputId = "rat_hgh_color",
+                                                             label = "Low rating:",
+                                                             choices = hcl.colors(10)[6:10],
+                                                             multiple = F),
                                                  p("Once you are ok with the choice, press the button below. It will create the data needed for further analysis"),
                                                  actionButton(inputId = "btn_proceed",
                                                               label = "Proceed!", icon = icon("cog"))),
@@ -85,9 +94,16 @@ server <- function(input, output, session) {
     paste0("There is ", nrow(filtered_reviews()), " reviews")
   })
   output$circ <- renderPlot(expr = {
-    plot_rating_hour(filtered_reviews())
+    plot_rating_hour(filtered_reviews(), input$rat_low_color, input$rat_hgh_color)
   })
-  output$tab_w <- DT::renderDataTable(expr = filtered_reviews())
+  output$tab_w <- DT::renderDataTable(expr = {
+    dt_f <- filtered_reviews()
+    cr_f <- colorRampPalette(colors = c(input$rat_low_color, "white", input$rat_hgh_color))(5)
+    res <- datatable(data = dt_f, rownames = F, caption = "All reviews from a given period")
+    res <- DT::formatStyle(table = res, columns = "rating", target = "row",
+                    backgroundColor = styleInterval(cuts = quantile(dt_f$rating)[-1], values = cr_f))
+    res
+  })
   observeEvent(eventExpr = input$btn_proceed,
                handlerExpr = {
                  isolate(expr = {

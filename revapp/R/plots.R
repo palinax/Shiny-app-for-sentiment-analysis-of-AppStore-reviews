@@ -1,13 +1,17 @@
 #' Title
 #'
 #' @param dt data.table
+#' @param lw_col color for low values
+#' @param hgh_col color for high values
 #'
 #' @return \code{ggplot2} object
 #' @export
 #'
 #' @examples
 #' plot_rating_hour(sample_apps_reviews[[1]])
-plot_rating_hour <- function(dt) {
+plot_rating_hour <- function(dt,
+                             lw_col = "blue",
+                             hgh_col = "red=") {
     checkmate::assert_data_table(dt)
     oo <- dt[, list(rating = mean(rating), .N),
              by = .(review_time = hour(review_time))]
@@ -17,10 +21,12 @@ plot_rating_hour <- function(dt) {
         geom_point(aes(size = N)) +
         coord_polar(theta = "x") +
         scale_y_continuous(expand = c(0, 0), limits = c(-2, 5)) +
-        scale_x_continuous(breaks = c(0:23),
+        scale_x_continuous(breaks = c(0:23), limits = c(-0.5, 23.5),
                            labels = function(x) sprintf("%02d:00", x)) +
-        scale_fill_gradient2(midpoint = mean(dt$rating)) +
-        theme(panel.grid.minor = element_blank())
+        scale_fill_gradient2(midpoint = mean(dt$rating), low = lw_col, high = hgh_col) +
+        theme_minimal() +
+        labs(y = NULL, x = NULL, title = "Mean rating by hour of review", color = "Mean rating", size = "No. reviews") +
+        theme(panel.grid.minor = element_blank(), legend.position = "bottom")
 }
 
 #' Title

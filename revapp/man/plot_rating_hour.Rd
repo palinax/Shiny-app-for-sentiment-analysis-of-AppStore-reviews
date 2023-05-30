@@ -4,10 +4,14 @@
 \alias{plot_rating_hour}
 \title{Title}
 \usage{
-plot_rating_hour(dt)
+plot_rating_hour(dt, lw_col = "blue", hgh_col = "red=")
 }
 \arguments{
 \item{dt}{data.table}
+
+\item{lw_col}{color for low values}
+
+\item{hgh_col}{color for high values}
 }
 \value{
 \code{ggplot2} object
