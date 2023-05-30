@@ -28,7 +28,8 @@ sentimentSummary(x)
 \item{colors}{colors for categories}
 }
 \value{
-charts
+charts, number and texts summarizing sentiment in a given set of
+reviews
 }
 \description{
 Set of functions for summary of 'review_set' class in terms of sentiment

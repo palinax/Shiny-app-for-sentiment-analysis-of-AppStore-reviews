@@ -2,16 +2,16 @@
 % Please edit documentation in R/review.R
 \name{sent_score}
 \alias{sent_score}
-\title{Title}
+\title{Calculates sentiment score for a sentence}
 \usage{
 sent_score(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{character vector}
 }
 \value{
-
+single number with mean setiment with afinn dictionairy
 }
 \description{
-Title
+Calculates sentiment score for a sentence
 }

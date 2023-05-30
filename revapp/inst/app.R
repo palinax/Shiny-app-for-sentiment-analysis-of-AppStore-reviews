@@ -176,7 +176,7 @@ server <- function(input, output, session) {
                })
   output$topics <- renderPlot({
     req(topicRes())
-    ggplot(data = get_top_from_lda(topicRes(), tt = 10), aes(x = beta, y = term)) +
+    ggplot(data = get_top_from_lda(topicRes(), no_top = 10), aes(x = beta, y = term)) +
       geom_col() +
       facet_wrap(~topic)
   })

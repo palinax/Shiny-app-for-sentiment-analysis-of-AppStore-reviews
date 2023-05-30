@@ -18,7 +18,7 @@ setClass(Class = "review",
                       processed = "character",
                       sent_score = "numeric"))
 
-#' Title
+#' Constructor for 'review' class
 #'
 #' @param x character containing review
 #'
@@ -37,9 +37,9 @@ review <- function(x) {
     res
 }
 
-#' Title
+#' Print method
 #'
-#' @param review
+#' @param review review object
 #'
 #' @return printed message about review
 #' @export
@@ -213,35 +213,15 @@ setMethod(f = "pre_process",
               pre_process(x@original)
           })
 
-#' Title
+#' Calculates sentiment score for a sentence
 #'
-#' @param x
+#' @param x character vector
 #'
-#' @return
+#' @return single number with mean setiment with afinn dictionairy
 #' @export
 #'
 #' @examples
 sent_score <- function(x) {
     checkmate::assert_character(x)
     mean(newfinn[match(x = x, table = newfinn$word)]$value, na.rm = TRUE)
-}
-
-#' Getting top topics from LDA
-#'
-#' @param lda_out object from LDA
-#' @param no_top number of top words for topic
-#'
-#' @return
-#' @export
-#'
-#' @examples
-get_top_from_lda <- function(lda_out, no_top) {
-    checkmate::assert_number(no_top, lower = 1)
-    oo <- data.table(t(lda_out@beta))
-    oo[, term := lda_out@terms]
-    oo <- melt(oo, id.vars = "term")
-    oo <- oo[order(variable, -value)]
-    oo[, i := 1]
-    oo[, i := cumsum(i), by = "variable"]
-    oo[i < no_top,.(topic = variable, term, beta = exp(value))][]
 }

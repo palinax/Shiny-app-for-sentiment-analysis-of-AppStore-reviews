@@ -2,18 +2,18 @@
 % Please edit documentation in R/review.R
 \name{show,review-method}
 \alias{show,review-method}
-\title{Title}
+\title{Print method}
 \usage{
 \S4method{show}{review}(object)
 }
 \arguments{
-\item{review}{}
+\item{review}{review object}
 }
 \value{
 printed message about review
 }
 \description{
-Title
+Print method
 }
 \examples{
 review("This is a great product.")
