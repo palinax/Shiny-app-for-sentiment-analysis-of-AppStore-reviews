@@ -11,5 +11,6 @@
 #' @import SnowballC
 #' @import methods
 #' @import topicmodels
+#' @import wordcloud2
 ## usethis namespace: end
 NULL

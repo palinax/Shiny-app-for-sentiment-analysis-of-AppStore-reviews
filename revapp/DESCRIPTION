@@ -18,7 +18,8 @@ Depends:
     tm,
     topicmodels,
     shiny,
-    SnowballC
+    SnowballC,
+    wordcloud2
 Imports:
     checkmate,
     methods

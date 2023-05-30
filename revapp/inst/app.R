@@ -61,7 +61,8 @@ ui <- fluidPage(
     mainPanel = mainPanel(tabsetPanel(id = "tab",
                                       summary_ui(),
                                       tabPanel(title = "Wordcloud", value = 2,
-                                               plotOutput(outputId = "wordcloud")
+                                               plotOutput(outputId = "wordcloud"),
+                                               wordcloud2Output(outputId = "wordcloud_prime"),
                                       ),
                                       tabPanel(title = "Sentiment Analysis", value = 3,
                                                fluidRow(column(width = 6, plotOutput("sentpie")),
@@ -119,6 +120,13 @@ server <- function(input, output, session) {
     req(reviewsProcessed())
     plot_word_count(reviewsProcessed()@words, input$word_cloud_max_words)
   })
+
+  output$wordcloud_prime <- renderWordcloud2({
+    req(reviewsProcessed())
+    tt <- reviewsProcessed()@words[order(-how_many)]
+    wordcloud2(data = tt[1:input$word_cloud_max_words])
+  })
+
   # 'Sentiment' tab ----
   br_p_n <- reactiveVal({c(-Inf, -.1, .1, Inf)})
 
