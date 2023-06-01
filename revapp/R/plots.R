@@ -1,4 +1,4 @@
-#' Title
+#' Mean rating by an hour
 #'
 #' @param dt data.table
 #' @param lw_col color for low values
@@ -29,7 +29,7 @@ plot_rating_hour <- function(dt,
         theme(panel.grid.minor = element_blank(), legend.position = "bottom")
 }
 
-#' Title
+#' Number of occurrences of each word
 #'
 #' @param oo data.table with columns 'proc_word' and 'how_many'
 #' @param mn number indicating how many words to plot
@@ -38,10 +38,7 @@ plot_rating_hour <- function(dt,
 #' @export
 #'
 #' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(i))
-#' set_review <- review_set(ll)
-#' plot_word_count(set_review@words)
+#' plot_word_count(review_set_example()@words)
 plot_word_count <- function(oo, mn = 10) {
     checkmate::assert_data_table(oo)
     checkmate::assert_number(mn, lower = 0)

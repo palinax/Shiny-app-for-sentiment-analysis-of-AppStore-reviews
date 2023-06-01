@@ -57,7 +57,7 @@ review_set_example <- function() {
 
 #' Show method for 'review_set'
 #'
-#' @param review_set object of class review
+#' @param x object of class review
 #'
 #' @return
 #' @export

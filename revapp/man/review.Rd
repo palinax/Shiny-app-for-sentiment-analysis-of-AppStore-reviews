@@ -19,16 +19,15 @@ A class representing a review.
 \section{Slots}{
 
 \describe{
-\item{\code{original}}{The original text of the review.}
+\item{\code{original}}{the original text of the review.}
 
-\item{\code{processed}}{The processed text of the review.}
+\item{\code{processed}}{the processed text of the review.}
 
-\item{\code{sent_score}}{The sentiment score of the review.}
+\item{\code{sent_score}}{the sentiment score of the review.}
 }}
 
 \examples{
-review <- review("This is a great product.")
-review
+review("This is a great product.")
 review <- review("This is a great product.")
 review
 }

@@ -5,13 +5,12 @@
 #' @name review
 #' @docType class
 #'
-#' @slot original The original text of the review.
-#' @slot processed The processed text of the review.
-#' @slot sent_score The sentiment score of the review.
+#' @slot original the original text of the review.
+#' @slot processed the processed text of the review.
+#' @slot sent_score the sentiment score of the review.
 #'
 #' @examples
-#' review <- review("This is a great product.")
-#' review
+#' review("This is a great product.")
 #' @export
 setClass(Class = "review",
          slots = list(original = "character",
@@ -39,7 +38,7 @@ review <- function(x) {
 
 #' Print method
 #'
-#' @param review review object
+#' @param x review object
 #'
 #' @return printed message about review
 #' @export
@@ -105,54 +104,26 @@ setMethod(f = "remove_stop_words",
               setdiff(x, stopwords)
           })
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setGeneric(name = "word_stem",
            def = function(x) {
                standardGeneric(f = "word_stem")
            })
 
-#' Title
-#'
-#' @param character
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod(f = "word_stem",
           signature = "character",
           definition = function(x) {
               tm::stemDocument(x)
           })
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setGeneric(name = "pre_process",
            def = function(x) {
                standardGeneric(f = "pre_process")
            })
 
-#' Title
-#'
-#' @param character
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod(f = "pre_process",
           signature = "character",
           definition = function(x) {
@@ -167,14 +138,7 @@ setMethod(f = "pre_process",
               return(x)
           })
 
-#' Title
-#'
-#' @param review
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod(f = "pre_process",
           signature = "review",
           definition = function(x) {
@@ -185,10 +149,11 @@ setMethod(f = "pre_process",
 #'
 #' @param x character vector
 #'
-#' @return single number with mean setiment with afinn dictionairy
+#' @return single number with mean sentiment with afinn dictionary
 #' @export
-#'
+#' @source http://www2.imm.dtu.dk/pubdb/pubs/6010-full.html
 #' @examples
+#' sent_score(c("great", "product"))
 sent_score <- function(x) {
     checkmate::assert_character(x)
     mean(newfinn[match(x = x, table = newfinn$word)]$value, na.rm = TRUE)

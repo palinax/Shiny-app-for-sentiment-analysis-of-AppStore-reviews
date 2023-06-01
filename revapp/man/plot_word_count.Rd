@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot_word_count}
 \alias{plot_word_count}
-\title{Title}
+\title{Number of occurrences of each word}
 \usage{
 plot_word_count(oo, mn = 10)
 }
@@ -15,11 +15,8 @@ plot_word_count(oo, mn = 10)
 \code{ggplot2} object
 }
 \description{
-Title
+Number of occurrences of each word
 }
 \examples{
-ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-             FUN = function(i) review(i))
-set_review <- review_set(ll)
-plot_word_count(set_review@words)
+plot_word_count(review_set_example()@words)
 }

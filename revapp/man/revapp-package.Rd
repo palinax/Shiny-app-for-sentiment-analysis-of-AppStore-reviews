@@ -4,8 +4,17 @@
 \name{revapp-package}
 \alias{revapp}
 \alias{revapp-package}
-\title{revapp: What the Package Does (Title Case)}
+\title{revapp: Review Appstore}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+Analysis of sentiment in AppStore Using text mining methods
+}
+\author{
+\strong{Maintainer}: Dominik Zabinski \email{dzabinski@studentu.uw.edu.pl}
+
+Authors:
+\itemize{
+  \item Palina Tkachova \email{ptkachova@studentu.uw.edu.pl}
+}
+
 }
 \keyword{internal}

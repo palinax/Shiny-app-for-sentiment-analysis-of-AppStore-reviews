@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot_rating_hour}
 \alias{plot_rating_hour}
-\title{Title}
+\title{Mean rating by an hour}
 \usage{
 plot_rating_hour(dt, lw_col = "blue", hgh_col = "red")
 }
@@ -17,7 +17,7 @@ plot_rating_hour(dt, lw_col = "blue", hgh_col = "red")
 \code{ggplot2} object
 }
 \description{
-Title
+Mean rating by an hour
 }
 \examples{
 plot_rating_hour(sample_apps_reviews[[1]])

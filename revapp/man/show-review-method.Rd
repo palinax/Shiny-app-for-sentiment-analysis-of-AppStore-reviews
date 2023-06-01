@@ -7,7 +7,7 @@
 \S4method{show}{review}(object)
 }
 \arguments{
-\item{review}{review object}
+\item{x}{review object}
 }
 \value{
 printed message about review

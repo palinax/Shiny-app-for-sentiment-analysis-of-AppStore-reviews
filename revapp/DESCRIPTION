@@ -1,11 +1,13 @@
 Package: revapp
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Review Appstore
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: 
+  c(person("Palina", "Tkachova", email = "ptkachova@studentu.uw.edu.pl", role = c("aut")),
+    person("Dominik", "Zabinski", email = "dzabinski@studentu.uw.edu.pl", role = c("aut", "cre")))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Analysis of sentiment in AppStore
+    Using text mining methods
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

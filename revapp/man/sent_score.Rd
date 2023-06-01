@@ -3,6 +3,9 @@
 \name{sent_score}
 \alias{sent_score}
 \title{Calculates sentiment score for a sentence}
+\source{
+http://www2.imm.dtu.dk/pubdb/pubs/6010-full.html
+}
 \usage{
 sent_score(x)
 }
@@ -10,8 +13,11 @@ sent_score(x)
 \item{x}{character vector}
 }
 \value{
-single number with mean setiment with afinn dictionairy
+single number with mean sentiment with afinn dictionary
 }
 \description{
 Calculates sentiment score for a sentence
+}
+\examples{
+sent_score(c("great", "product"))
 }

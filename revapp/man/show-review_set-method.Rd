@@ -7,7 +7,7 @@
 \S4method{show}{review_set}(object)
 }
 \arguments{
-\item{review_set}{object of class review}
+\item{x}{object of class review}
 }
 \value{
 
