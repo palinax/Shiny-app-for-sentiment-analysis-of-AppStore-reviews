@@ -35,20 +35,28 @@ server <- function(input, output, session) {
   filtered_reviews <- reactive({
     sample_apps_reviews[[input$app_name]][between(as.Date(review_time), input$date_range[1], input$date_range[2])]
   })
+
+  # simple text containing number of reviews
   output$no_reviews <- renderText(expr = {
     paste0("There is ", nrow(filtered_reviews()), " reviews")
   })
+
+  # mean rating by the hour of review
   output$circ <- renderPlot(expr = {
     plot_rating_hour(filtered_reviews(), input$rat_low_color, input$rat_hgh_color)
   })
+
+  # table containing filtered reviews
   output$tab_w <- DT::renderDataTable(expr = {
     dt_f <- filtered_reviews()
     cr_f <- colorRampPalette(colors = c(input$rat_low_color, "white", input$rat_hgh_color))(5)
     res <- datatable(data = dt_f, rownames = F, caption = "All reviews from a given period")
     res <- DT::formatStyle(table = res, columns = "rating", target = "row",
-                    backgroundColor = styleInterval(cuts = quantile(dt_f$rating)[-1], values = cr_f))
+                           backgroundColor = styleInterval(cuts = quantile(dt_f$rating)[-1], values = cr_f))
     res
   })
+
+  # observing pushing a button to process reviews into useful object of specific class
   observeEvent(eventExpr = input$btn_proceed,
                handlerExpr = {
                  isolate(expr = {
@@ -57,14 +65,18 @@ server <- function(input, output, session) {
                      reviewsProcessed(review_set(l))
                    }, message = "Processing reviews")
                  })
-                 showModal(ui = modalDialog(title = "Done!", "Now you can go to other tabs and explore it further!", div(print(reviewsProcessed))))
+                 showModal(ui = modalDialog(title = "Done!",
+                                            "Now you can go to other tabs and explore it further!"))
                })
+
   # 'Wordcloud' tab ----
+  # barplot with words
   output$wordcloud <- renderPlot({
     req(reviewsProcessed())
     plot_word_count(reviewsProcessed()@words, input$word_cloud_max_words)
   })
 
+  # actual wordcloud
   output$wordcloud_prime <- renderWordcloud2({
     req(reviewsProcessed())
     tt <- reviewsProcessed()@words[order(-how_many)]
@@ -72,6 +84,7 @@ server <- function(input, output, session) {
   })
 
   # 'Sentiment' tab ----
+  # reactive value for breaks
   br_p_n <- reactiveVal({c(-Inf, -.1, .1, Inf)})
 
   observeEvent(eventExpr = input$sent_breaks,
@@ -79,6 +92,7 @@ server <- function(input, output, session) {
                  br_p_n(c(-Inf, input$sent_breaks, Inf))
                })
 
+  # piechart with distribution
   output$sentpie <- renderPlot({
     req(reviewsProcessed())
     validate(
@@ -87,10 +101,12 @@ server <- function(input, output, session) {
     sentimentDistributionPie(reviewsProcessed(), br = br_p_n(), color = RColorBrewer::brewer.pal(4, input$sent_colors))
   })
 
+  # histogram with distribution
   output$senthist <- renderPlot({
     req(reviewsProcessed())
     sentimentDistributionHist(reviewsProcessed())})
 
+  # text about sentiment ratio
   output$sentRatio <- renderText({
     req(reviewsProcessed())
     validate(
@@ -99,18 +115,19 @@ server <- function(input, output, session) {
     paste0("Sentiment ratio is: ", sentimentRatio(reviewsProcessed(), br = br_p_n()))
   })
 
+  # Summary statistics
   output$sentVals <- renderUI({
     req(reviewsProcessed())
     res <- sentimentSummary(reviewsProcessed())
-    div(
-      p(paste0("Mean:", res$mean)),
-      p(paste0("SD:", res$sd)),
-      p(paste0("Min/max:", res$min, "/", res$max)),
-      p(paste0("Deciles:", paste0(res$dec, collapse = ", ")))
-    )
+    div(p(paste0("Mean:", res$mean)),
+        p(paste0("SD:", res$sd)),
+        p(paste0("Min/max:", res$min, "/", res$max)),
+        p(paste0("Deciles:", paste0(res$dec, collapse = ", "))))
   })
 
+  # table with sentiment score for each review
   output$sent_table <- DT::renderDataTable(expr = {
+    req(reviewsProcessed())
     res <- rbindlist(l = lapply(reviewsProcessed()@reviews,
                                 FUN = function(i) data.table(review = i@original, score = i@sent_score)))
     cols <- RColorBrewer::brewer.pal(4, input$sent_colors)
@@ -119,6 +136,7 @@ server <- function(input, output, session) {
                              backgroundColor = styleInterval(cuts = br_p_n()[-1], values = cols))
     resDt
   })
+
   # 'Trending topics' tab ----
   topicRes <- reactiveVal(NULL)
   observeEvent(eventExpr = input$topic_go,
@@ -133,6 +151,7 @@ server <- function(input, output, session) {
                  })
                })
 
+  # words most common for each topic
   output$topics <- renderPlot({
     req(topicRes())
     ggplot(data = get_top_from_lda(topicRes(), no_top = 10),
