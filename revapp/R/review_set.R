@@ -15,6 +15,7 @@
 #' set_review <- review_set(ll)
 #' set_review
 #' @export
+#' @aliases review_set-class
 setClass(Class = "review_set",
          slots = list(reviews = "list",
                       words = "data.table",
@@ -72,7 +73,7 @@ setMethod(f = "show",
                              paste0(object@words[order(-how_many)]$proc_word[1:3], collapse = "', '"), "'\n"))
               message(paste0("Mean sentiment score (standard deviation): ",
                              mean(object@sent_scores, na.rm = T), " (",
-                             sd(object@sent_scores, na.rm = T), ")\n"))
+                             stats::sd(object@sent_scores, na.rm = T), ")\n"))
           })
 
 #' Set of functions for summary of 'review_set' class in terms of sentiment
@@ -100,10 +101,9 @@ sentimentDistributionPie <- function(x,
     checkmate::assert_character(colors, len = 4)
 
     res <- data.table::data.table(sent_score = x@sent_scores)
-    res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
-    res[is.nan(sent_score), lab := "couldn't determine"]
+    res$lab <- assign_sent_lab(res$sent_score, br)
     res <- res[, list(l = .N), by = "lab"]
-    pie(res$l, labels = res$lab, main = "Sentiment distribution", col = colors)
+    graphics::pie(res$l, labels = res$lab, main = "Sentiment distribution", col = colors)
 }
 
 #' @name review_set-summary
@@ -120,19 +120,18 @@ sentimentDistributionHist <- function(x) {
 #' @name review_set-summary
 sentimentRatio <- function(x,
                            br = c(-Inf, -.1, .1, Inf)) {
-    res <- data.table(sent_score = x@sent_scores)
-    res[, lab := as.character(cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive")))]
-    res[is.nan(sent_score), lab := "couldn't determine"]
+    res <- data.table::data.table(sent_score = x@sent_scores)
+    res$lab <- assign_sent_lab(res$sent_score, br)
     sum(res$lab == "positive") / sum(res$lab == "negative")
 }
 
 #' @export
 #' @name review_set-summary
 sentimentSummary <- function(x) {
-    res <- na.omit(x@sent_scores)
+    res <- stats::na.omit(x@sent_scores)
     list(mean = mean(res),
-         sd = sd(res),
+         sd = stats::sd(res),
          min = min(res),
          max = max(res),
-         dec = quantile(res, probs = 1:10 / 10))
+         dec = stats::quantile(res, probs = 1:10 / 10))
 }

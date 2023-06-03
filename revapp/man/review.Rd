@@ -3,6 +3,7 @@
 \docType{class}
 \name{review}
 \alias{review}
+\alias{review-class}
 \title{review Class}
 \usage{
 review(x)

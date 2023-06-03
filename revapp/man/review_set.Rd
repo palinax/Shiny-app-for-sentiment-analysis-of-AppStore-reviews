@@ -3,6 +3,7 @@
 \docType{class}
 \name{review_set}
 \alias{review_set}
+\alias{review_set-class}
 \title{review_set Class}
 \usage{
 review_set(x)

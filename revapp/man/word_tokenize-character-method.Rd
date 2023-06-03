@@ -7,7 +7,7 @@
 \S4method{word_tokenize}{character}(x)
 }
 \arguments{
-\item{x}{A character string.}
+\item{x}{object to tokenize}
 }
 \value{
 A character vector of individual words.

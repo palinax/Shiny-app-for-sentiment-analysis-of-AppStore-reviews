@@ -46,12 +46,15 @@ get_top_from_lda <- function(lda_out, no_top = 2) {
     checkmate::assert_number(no_top, lower = 1)
     checkmate::assert_string(class(lda_out), pattern = "^(LDA).*")
 
-    oo <- data.table(t(lda_out@beta))
+    oo <- data.table::data.table(t(lda_out@beta))
     oo$term <- lda_out@terms
-    oo <- melt(data = oo, id.vars = "term")
-    oo <- oo[order(variable, -value)]
+    oo <- data.table::melt(data = oo, id.vars = "term")
+    data.table::setorderv(oo, cols = c("variable", "value"), order = c(1, -1))
     i <- NULL
     oo$i <- 1
     oo[, i := cumsum(i), by = "variable"]
-    oo[i < no_top,.(topic = variable, term, beta = exp(value))][]
+    oo$beta <- exp(oo$value)
+    data.table::setnames(oo, "variable", "topic")
+    oo <- oo[i < no_top]
+    subset(oo, select = c("topic", "beta"))[]
 }

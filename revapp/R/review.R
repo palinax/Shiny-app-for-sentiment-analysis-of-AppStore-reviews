@@ -12,6 +12,7 @@
 #' @examples
 #' review("This is a great product.")
 #' @export
+#' @aliases review-class
 setClass(Class = "review",
          slots = list(original = "character",
                       processed = "character",
@@ -38,7 +39,7 @@ review <- function(x) {
 
 #' Print method
 #'
-#' @param x review object
+#' @param object review object
 #'
 #' @return printed message about review
 #' @export
@@ -47,23 +48,17 @@ review <- function(x) {
 #' review("This is a great product.")
 setMethod(f = "show",
           signature = "review",
-          definition = function(x) {
-              message(paste0("original: ", x@original, "\n"))
+          definition = function(object) {
+              message(paste0("original: ", object@original, "\n"))
               message(paste0("processed: '",
-                             paste0(x@processed, collapse = "', '"), "'\n"))
+                             paste0(object@processed, collapse = "', '"), "'\n"))
           })
-
-#' @export
-setGeneric(name = "word_tokenize",
-           def = function(x) {
-               standardGeneric(f = "word_tokenize")
-           })
 
 #' Tokenize words in a character string
 #'
 #' This method tokenizes the words in a character string by splitting it on whitespace and handling contractions.
 #'
-#' @param x A character string.
+#' @param x object to tokenize
 #'
 #' @return A character vector of individual words.
 #' @export
@@ -77,26 +72,22 @@ setMethod(f = "word_tokenize",
               unlist(strsplit(x = x, split = "\\s"))
           })
 
+#' Remove Numerical and Punctuation Characters
+#'
+#' This method removes numerical and punctuation characters from a given character vector.
+#'
+#' @param x A character vector.
+#' @return A modified character vector with numerical and punctuation characters removed.
 #' @export
-setGeneric(name = "remove_numerical_and_punct",
-           def = function(x) {
-               standardGeneric(f = "remove_numerical_and_punct")
-           })
-
-#' @export
+#' @method remove_numerical_and_punct character
+#' @examples
+#' remove_numerical_and_punct("Hello, 123!")  # Returns "Hello"
 setMethod(f = "remove_numerical_and_punct",
           signature = "character",
           definition = function(x) {
               gsub("[0-9[:punct:]]", " ", x)
           })
 
-#' @return
-setGeneric(name = "remove_stop_words",
-           def = function(x) {
-               standardGeneric(f = "remove_stop_words")
-           })
-
-#' @export
 setMethod(f = "remove_stop_words",
           signature = "character",
           definition = function(x) {
@@ -105,35 +96,28 @@ setMethod(f = "remove_stop_words",
           })
 
 #' @export
-setGeneric(name = "word_stem",
-           def = function(x) {
-               standardGeneric(f = "word_stem")
-           })
-
-#' @export
 setMethod(f = "word_stem",
           signature = "character",
           definition = function(x) {
               tm::stemDocument(x)
           })
 
+#' @title Preprocess character
+#'
 #' @param object An object to preprocess
 #'
 #' @export
 #' @name pre_process
-setGeneric(name = "pre_process",
-           def = function(object) {
-               standardGeneric(f = "pre_process")
-           })
-
 #' @export
+#' @return returns processed character, that means after removing emojis, converting to lowercase,
+#' removing numeric values and punctuations, tokenizing, removing stop words and stemming
 #' @rdname pre_process
 setMethod(f = "pre_process",
           signature = "character",
-          definition = function(x) {
-              checkmate::assert_character(x)
+          definition = function(object) {
+              checkmate::assert_character(object)
               # remove emojis
-              x <- gsub("[^\x01-\x7F]", "", x)
+              x <- gsub("[^\x01-\x7F]", "", object)
               x <- tolower(x)
               x <- remove_numerical_and_punct(x)
               x <- word_tokenize(x)
@@ -146,8 +130,8 @@ setMethod(f = "pre_process",
 #' @rdname pre_process
 setMethod(f = "pre_process",
           signature = "review",
-          definition = function(x) {
-              pre_process(x@original)
+          definition = function(object) {
+              pre_process(object@original)
           })
 
 #' Calculates sentiment score for a sentence
