@@ -21,16 +21,17 @@ summary_ui_main <- function() {
 #' @rdname shiny_ui
 summary_ui_side <- function() {
     list(h2("First, select the app of interest"),
-         p("You can select from a data that comes with a package: "),
+         p("You can select from a data that comes with a package ..."),
          selectInput(inputId = "app_name",
                      label = "Select an app from package data",
                      choices = names(sample_apps_reviews)),
-         fluidRow(column(width = 10, p("Or you can prepare file yourself")),
-                  column(width = 2, actionButton("show_how", "", icon = icon("question")))),
+         fluidRow(column(width = 10, p("... or you can prepare file yourself")),
+                  column(width = 2, action_btn_mdl("show_how", "", icon = icon("question")))),
          fileInput(inputId = "data_outside",
                    label = "Own data (to be developed)",
                    multiple = F,
                    accept = ".Rds"),
+         p("Next, filter out some reviews based on date"),
          dateRangeInput(inputId = "date_range",
                         label = "Reviews between",
                         start = "2023-01-01",
@@ -38,14 +39,16 @@ summary_ui_side <- function() {
                         end = Sys.Date(),
                         max = Sys.Date()),
          p("You can chose coloring based on rating"),
-         selectInput(inputId = "rat_low_color",
-                     label = "High rating:",
-                     choices = grDevices::hcl.colors(10)[1:5],
-                     multiple = F),
-         selectInput(inputId = "rat_hgh_color",
-                     label = "Low rating:",
-                     choices = grDevices::hcl.colors(10)[6:10],
-                     multiple = F),
+         fluidRow(column(width = 6,
+                         selectInput(inputId = "rat_low_color",
+                                     label = "High rating:",
+                                     choices = grDevices::hcl.colors(10)[1:5],
+                                     multiple = F)),
+                  column(width = 6,
+                         selectInput(inputId = "rat_hgh_color",
+                                     label = "Low rating:",
+                                     choices = grDevices::hcl.colors(10)[6:10],
+                                     multiple = F))),
          p("Once you are ok with the choice, press the button below. It will create the data needed for further analysis"),
          actionButton(inputId = "btn_proceed",
                       label = "Proceed!",
@@ -57,8 +60,10 @@ summary_ui_side <- function() {
 wordcloud_ui_main <- function() {
     tabPanel(title = "Wordcloud",
              value = 2,
-             plotOutput(outputId = "wordcloud"),
-             wordcloud2Output(outputId = "wordcloud_prime"))
+             fluidRow(column(width = 4,
+                             plotOutput(outputId = "wordcloud")),
+                      column(width = 8,
+                             wordcloud2Output(outputId = "wordcloud_prime"))))
 }
 
 #' @export

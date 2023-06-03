@@ -21,7 +21,8 @@ Depends:
     topicmodels,
     shiny,
     SnowballC,
-    wordcloud2
+    wordcloud2,
+    shinythemes
 Imports:
     checkmate,
     methods,

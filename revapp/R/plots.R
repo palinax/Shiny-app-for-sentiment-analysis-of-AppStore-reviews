@@ -45,6 +45,10 @@ plot_word_count <- function(oo, mn = 10) {
     checkmate::assert_number(mn, lower = 0)
 
     rr <- oo[oo$proc_word != ""][order(-how_many)][1:mn]
+    setorderv(rr, "how_many", order = 1)
+    rr$ll <- factor(x = rr$proc_word, levels = rr$proc_word, labels = substr(rr$proc_word, 1, 20))
     ggplot(data = rr) +
-        geom_col(aes(x = how_many, y = substr(proc_word, 1, 20)))
+        geom_col(aes(x = how_many, y = ll)) +
+        labs(x = "No of occurences", y = "Word (first 20 characters)") +
+        theme_minimal()
 }

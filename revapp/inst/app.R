@@ -1,7 +1,8 @@
 library(revapp)
 
 ui <- fluidPage(
-  tags$head(includeCSS(path = "www/style.css")),
+  theme = shinythemes::shinytheme("sandstone"),
+  shiny::tags$head(htmltools::includeCSS(path = "www/style.css")),
   sidebarLayout(
     sidebarPanel = sidebarPanel(width = 3,
                                 conditionalPanel(condition = "input.tab==1",
@@ -29,7 +30,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = input$show_how,
                handlerExpr = {
                  tt <- readLines(con = "www/modal_how_to_prep.html")
-                 showModal(ui = modalDialog(title = "How to prepare own dataset?", HTML(paste0(tt, collapse = "\n"))))
+                 showModal(ui = modalDialog(title = "How to prepare own dataset?", htmltools::HTML(paste0(tt, collapse = "\n"))))
                })
   # data with reviews filtered by app name and dates
   filtered_reviews <- reactive({
