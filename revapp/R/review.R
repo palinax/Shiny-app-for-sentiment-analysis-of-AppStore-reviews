@@ -62,7 +62,7 @@ setMethod(f = "show",
 #'
 #' @return A character vector of individual words.
 #' @export
-#' @method word_tokenize character
+#' @rdname word_tokenize
 #' @examples
 #' word_tokenize("I don't like it")
 setMethod(f = "word_tokenize",
@@ -81,13 +81,20 @@ setMethod(f = "word_tokenize",
 #' @export
 #' @method remove_numerical_and_punct character
 #' @examples
-#' remove_numerical_and_punct("Hello, 123!")  # Returns "Hello"
+#' remove_numerical_and_punct("Hello, 123!")
+#' @rdname remove_numerical_and_punct
 setMethod(f = "remove_numerical_and_punct",
           signature = "character",
           definition = function(x) {
               gsub("[0-9[:punct:]]", " ", x)
           })
 
+#' @title Removing stop words from a character
+#'
+#' @param x character
+#'
+#' @export
+#' @rdname remove_stop_words
 setMethod(f = "remove_stop_words",
           signature = "character",
           definition = function(x) {
@@ -95,7 +102,11 @@ setMethod(f = "remove_stop_words",
               setdiff(x, stopwords)
           })
 
+#' @title Stemming words
+#'
+#' @param x character
 #' @export
+#' @rdname word_stem
 setMethod(f = "word_stem",
           signature = "character",
           definition = function(x) {
@@ -107,11 +118,13 @@ setMethod(f = "word_stem",
 #' @param object An object to preprocess
 #'
 #' @export
-#' @name pre_process
+#' @rdname pre_process
 #' @export
 #' @return returns processed character, that means after removing emojis, converting to lowercase,
 #' removing numeric values and punctuations, tokenizing, removing stop words and stemming
-#' @rdname pre_process
+#'
+#' @examples
+#' pre_process("HellO")
 setMethod(f = "pre_process",
           signature = "character",
           definition = function(object) {
