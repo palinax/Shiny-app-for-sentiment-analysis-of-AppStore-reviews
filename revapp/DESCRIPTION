@@ -26,7 +26,8 @@ Depends:
 Imports:
     checkmate,
     methods,
-    RColorBrewer
+    RColorBrewer,
+    htmltools
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

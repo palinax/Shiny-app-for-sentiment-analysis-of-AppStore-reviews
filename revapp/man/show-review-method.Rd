@@ -16,5 +16,5 @@ printed message about review
 Print method
 }
 \examples{
-review("This is a great product.")
+print(review("This is a great product.", 5))
 }

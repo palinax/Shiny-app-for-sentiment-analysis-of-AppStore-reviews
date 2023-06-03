@@ -12,5 +12,6 @@
 #' @import methods
 #' @import topicmodels
 #' @import wordcloud2
+#' @import shinythemes
 ## usethis namespace: end
 NULL

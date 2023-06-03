@@ -10,7 +10,7 @@
 \item{object}{object of class review}
 }
 \value{
-
+print of \code{review_set} object
 }
 \description{
 Show method for 'review_set'

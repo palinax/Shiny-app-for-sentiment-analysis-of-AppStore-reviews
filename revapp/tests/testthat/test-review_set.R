@@ -1,6 +1,6 @@
 test_that("simple test for review_set", {
-    review1 <- review("This is a great product.")
-    review2 <- review("I'm not satisfied with this product.")
+    review1 <- review("This is a great product.", 2)
+    review2 <- review("I'm not satisfied with this product.", 3)
 
     set_review <- review_set(list(review1, review2))
     expect_equal(object = length(set_review@reviews), 2)

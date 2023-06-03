@@ -2,9 +2,9 @@
 #'
 #' @param ... parameters same as in shiny::actionButton
 #'
-#' @return
+#' @return shiny.tag object
 #' @export
-#'
+#' @import htmltools
 #' @examples
 #' action_btn_mdl("show_how", "", icon = icon("question"))
 action_btn_mdl <- function(...) {

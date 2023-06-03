@@ -8,32 +8,34 @@
 #' @slot original the original text of the review.
 #' @slot processed the processed text of the review.
 #' @slot sent_score the sentiment score of the review.
+#' @slot rating rating assigned to the review
 #'
-#' @examples
-#' review("This is a great product.")
 #' @export
 #' @aliases review-class
 setClass(Class = "review",
          slots = list(original = "character",
                       processed = "character",
-                      sent_score = "numeric"))
+                      sent_score = "numeric",
+                      rating = "numeric"))
 
 #' Constructor for 'review' class
 #'
 #' @param x character containing review
+#' @param rt rating of a review
 #'
-#' @return
+#' @return object of class \code{review}
 #' @export
 #'
 #' @examples
-#' review <- review("This is a great product.")
+#' review <- review("This is a great product.", 5)
 #' review
-review <- function(x) {
+review <- function(x, rt) {
     prc <- pre_process(x)
     res <- new(Class = "review",
                original = x,
                processed = prc,
-               sent_score = sent_score(prc))
+               sent_score = sent_score(prc),
+               rating = rt)
     res
 }
 
@@ -45,13 +47,14 @@ review <- function(x) {
 #' @export
 #'
 #' @examples
-#' review("This is a great product.")
+#' print(review("This is a great product.", 5))
 setMethod(f = "show",
           signature = "review",
           definition = function(object) {
               message(paste0("original: ", object@original, "\n"))
               message(paste0("processed: '",
                              paste0(object@processed, collapse = "', '"), "'\n"))
+              message(paste0("rating: ", object@rating))
           })
 
 #' Tokenize words in a character string

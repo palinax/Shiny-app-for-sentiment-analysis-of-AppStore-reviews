@@ -111,7 +111,8 @@ sentiment_ui_side <- function() {
 topics_ui_main <- function() {
     tabPanel(title = "Trending Topics",
              value = 4,
-             plotOutput("topics"))
+             fluidRow(column(width = 6, plotOutput("topics")),
+                      column(width = 6, plotOutput("topic_vs_rating"))))
 }
 
 #' @export
@@ -128,6 +129,12 @@ topics_ui_side <- function() {
                      label = "Method",
                      choices = c("Gibbs", "VEM"),
                      multiple = FALSE),
+         sliderInput(inputId = "topics_no_top_words",
+                     label = "Number of top words for topic",
+                     min = 2,
+                     max = 15,
+                     step = 1,
+                     value = 2),
          actionButton(inputId = "topic_go",
                       label = "Go!",
                       icon = icon("pen")))

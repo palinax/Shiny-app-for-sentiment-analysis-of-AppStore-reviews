@@ -10,7 +10,7 @@ action_btn_mdl(...)
 \item{...}{parameters same as in shiny::actionButton}
 }
 \value{
-
+shiny.tag object
 }
 \description{
 Small action button

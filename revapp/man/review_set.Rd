@@ -12,7 +12,7 @@ review_set(x)
 \item{x}{list of reviews}
 }
 \value{
-
+object of class \code{review_set}
 }
 \description{
 A class representing a set of reviews.
@@ -25,14 +25,16 @@ A class representing a set of reviews.
 \item{\code{words}}{A data.table containing the words in the reviews.}
 
 \item{\code{sent_scores}}{A numeric vector containing the sentiment scores of the reviews.}
+
+\item{\code{ratings}}{A numeric vector containing ratings of the reviews}
 }}
 
 \examples{
-ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-             FUN = function(i) review(x = i))
+dt_ex <- sample_apps_reviews$Snapchat
+ll <- lapply(X = 1:10,
+             FUN = function(i) {
+                 review(x = dt_ex$review, rt = dt_ex$rating)
+             })
 set_review <- review_set(ll)
 set_review
-ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-             FUN = function(i) review(x = i))
-review_set(ll)
 }

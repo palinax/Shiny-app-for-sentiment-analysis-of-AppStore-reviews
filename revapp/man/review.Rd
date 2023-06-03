@@ -6,13 +6,15 @@
 \alias{review-class}
 \title{review Class}
 \usage{
-review(x)
+review(x, rt)
 }
 \arguments{
 \item{x}{character containing review}
+
+\item{rt}{rating of a review}
 }
 \value{
-
+object of class \code{review}
 }
 \description{
 A class representing a review.
@@ -25,10 +27,11 @@ A class representing a review.
 \item{\code{processed}}{the processed text of the review.}
 
 \item{\code{sent_score}}{the sentiment score of the review.}
+
+\item{\code{rating}}{rating assigned to the review}
 }}
 
 \examples{
-review("This is a great product.")
-review <- review("This is a great product.")
+review <- review("This is a great product.", 5)
 review
 }

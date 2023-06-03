@@ -8,30 +8,31 @@
 #' @slot reviews A list containing individual review objects.
 #' @slot words A data.table containing the words in the reviews.
 #' @slot sent_scores A numeric vector containing the sentiment scores of the reviews.
+#' @slot ratings A numeric vector containing ratings of the reviews
 #'
-#' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(x = i))
-#' set_review <- review_set(ll)
-#' set_review
 #' @export
 #' @aliases review_set-class
 setClass(Class = "review_set",
          slots = list(reviews = "list",
                       words = "data.table",
-                      sent_scores = "numeric"))
+                      sent_scores = "numeric",
+                      ratings = "numeric"))
 
 #' Constructor of 'review_set' class
 #'
 #' @param x list of reviews
 #'
-#' @return
+#' @return object of class \code{review_set}
 #' @export
 #'
 #' @examples
-#' ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-#'              FUN = function(i) review(x = i))
-#' review_set(ll)
+#' dt_ex <- sample_apps_reviews$Snapchat
+#' ll <- lapply(X = 1:10,
+#'              FUN = function(i) {
+#'                  review(x = dt_ex$review, rt = dt_ex$rating)
+#'              })
+#' set_review <- review_set(ll)
+#' set_review
 review_set <- function(x) {
     checkmate::assert_list(x)
     words <- lapply(X = x,
@@ -40,7 +41,8 @@ review_set <- function(x) {
     new(Class = "review_set",
         reviews = x,
         words = words,
-        sent_scores = unlist(lapply(X = x, FUN = function(i) i@sent_score)))
+        sent_scores = unlist(lapply(X = x, FUN = function(i) i@sent_score)),
+        ratings = unlist(lapply(X = x, FUN = function(i) i@rating)))
 }
 
 #' Example of 'review_set' class
@@ -51,8 +53,11 @@ review_set <- function(x) {
 #' @examples
 #' review_set_example()
 review_set_example <- function() {
-    ll <- lapply(X = sample_apps_reviews$Snapchat$review[1:10],
-                 FUN = function(i) review(x = i))
+    dt_ex <- sample_apps_reviews$Snapchat
+    ll <- lapply(X = 1:10,
+                 FUN = function(i) {
+                     review(x = dt_ex$review, rt = dt_ex$rating)
+                 })
     review_set(ll)
 }
 
@@ -60,7 +65,7 @@ review_set_example <- function() {
 #'
 #' @param object object of class review
 #'
-#' @return
+#' @return print of \code{review_set} object
 #' @export
 #'
 #' @examples
@@ -74,6 +79,9 @@ setMethod(f = "show",
               message(paste0("Mean sentiment score (standard deviation): ",
                              mean(object@sent_scores, na.rm = T), " (",
                              stats::sd(object@sent_scores, na.rm = T), ")\n"))
+              message(paste0("Mean rating (standard deviation): ",
+                             mean(object@ratings, na.rm = T), " (",
+                             stats::sd(object@ratings, na.rm = T), ")\n"))
           })
 
 #' Set of functions for summary of 'review_set' class in terms of sentiment

@@ -62,7 +62,8 @@ server <- function(input, output, session) {
                handlerExpr = {
                  isolate(expr = {
                    withProgress(expr = {
-                     l = lapply(X = filtered_reviews()$review, FUN = function(i) review(i))
+                     l = lapply(X = 1:nrow(filtered_reviews()),
+                                FUN = function(i) review(filtered_reviews()$review[i], filtered_reviews()$rating[i]))
                      reviewsProcessed(review_set(l))
                    }, message = "Processing reviews")
                  })
@@ -155,10 +156,21 @@ server <- function(input, output, session) {
   # words most common for each topic
   output$topics <- renderPlot({
     req(topicRes())
-    ggplot(data = get_top_from_lda(topicRes(), no_top = 10),
-           mapping = aes(x = beta, y = term)) +
-      geom_col() +
-      facet_wrap(~topic)
+    plot_top_from_lda(get_top_from_lda(topicRes(), isolate(input$topics_no_top_words))) +
+      labs(title = paste0(isolate(input$topic_method), " for ", isolate(input$topic_no_topics), " topics"))
+  })
+  # topic vs rating
+  output$topic_vs_rating <- renderPlot({
+    req(topicRes())
+    dt_res <- data.table(tp = topicmodels::topics(topicRes()),
+                         rt = reviewsProcessed()@ratings)
+    ggplot(data = dt_res, aes(x = tp, y = rt, group = tp)) +
+      geom_boxplot() +
+      geom_jitter(height = .2) +
+      theme_minimal() +
+      scale_x_continuous(labels = function(x) paste0("V", x), breaks = 1:max(dt_res$tp)) +
+      labs(title = "Distribution of rating in topics", x = "Topic", y = "Rating") +
+      coord_flip()
   })
 }
 

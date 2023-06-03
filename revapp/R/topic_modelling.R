@@ -18,7 +18,7 @@ get_topic_reviews <- function(reviews, no_topics = 2, method = "Gibbs") {
     tokenized_text <- lapply(X = reviews,
                              FUN = function(i) {
                                  res <- i@processed
-                                 res <- res[nchar(res) > 0]
+                                 res <- res[nchar(res) > 2]
                                  res
                              })
     corpus <- Corpus(VectorSource(tokenized_text))
@@ -50,11 +50,32 @@ get_top_from_lda <- function(lda_out, no_top = 2) {
     oo$term <- lda_out@terms
     oo <- data.table::melt(data = oo, id.vars = "term")
     data.table::setorderv(oo, cols = c("variable", "value"), order = c(1, -1))
-    i <- NULL
     oo$i <- 1
-    oo[, i := cumsum(i), by = "variable"]
+    oo[, i := cumsum(i), by = variable]
     oo$beta <- exp(oo$value)
     data.table::setnames(oo, "variable", "topic")
-    oo <- oo[i < no_top]
-    subset(oo, select = c("topic", "beta"))[]
+    oo <- oo[i <= no_top]
+    subset(oo, select = c("topic", "i", "term", "beta"))[]
+}
+
+#' Plot top terms from topics
+#'
+#' @param ds data.table object, result of \code{get_top_from_lda}
+#'
+#' @return ggplot object
+#' @export
+#'
+#' @examples
+#' topiced <- get_topic_reviews(review_set_example()@reviews)
+#' top <- get_top_from_lda(topiced)
+#' plot_top_from_lda(top)
+plot_top_from_lda <- function(ds) {
+    ggplot() +
+        geom_col(data = ds, mapping = aes(x = i, y = beta, color = topic), fill = "white") +
+        geom_text(data = ds, mapping = aes(x = i, y = 5e-2 * max(ds$beta), label = term), hjust = 0) +
+        scale_x_reverse() +
+        coord_flip() +
+        facet_wrap(~topic) +
+        theme_minimal() +
+        theme(legend.position = "none", panel.grid.minor = element_blank())
 }

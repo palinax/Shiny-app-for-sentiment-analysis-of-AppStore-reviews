@@ -1,5 +1,5 @@
 test_that("review works", {
-    res <- review(x = "This is a great product.")
+    res <- review(x = "This is a great product.", rt = 2)
     expect_equal(object = res@original, "This is a great product.")
     expect_equal(object = res@processed, c("great", "product"))
 })
