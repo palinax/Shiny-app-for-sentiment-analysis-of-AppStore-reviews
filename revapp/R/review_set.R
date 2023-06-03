@@ -34,8 +34,8 @@ setClass(Class = "review_set",
 review_set <- function(x) {
     checkmate::assert_list(x)
     words <- lapply(X = x,
-                    FUN = function(i) data.table(proc_word = i@processed))
-    words <- rbindlist(words)[, list(how_many = .N), by = "proc_word"]
+                    FUN = function(i) data.table::data.table(proc_word = i@processed))
+    words <- data.table::rbindlist(words)[, list(how_many = .N), by = "proc_word"]
     new(Class = "review_set",
         reviews = x,
         words = words,
@@ -57,22 +57,22 @@ review_set_example <- function() {
 
 #' Show method for 'review_set'
 #'
-#' @param x object of class review
+#' @param object object of class review
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' review_set_example()
+#' print(review_set_example())
 setMethod(f = "show",
           signature = "review_set",
-          definition = function(x) {
-              message(paste0("Number of reviews: ", length(x@reviews), "\n"))
+          definition = function(object) {
+              message(paste0("Number of reviews: ", length(object@reviews), "\n"))
               message(paste0("Most common words: '",
-                             paste0(x@words[order(-how_many)]$proc_word[1:3], collapse = "', '"), "'\n"))
+                             paste0(object@words[order(-how_many)]$proc_word[1:3], collapse = "', '"), "'\n"))
               message(paste0("Mean sentiment score (standard deviation): ",
-                             mean(x@sent_scores, na.rm = T), " (",
-                             sd(x@sent_scores, na.rm = T), ")\n"))
+                             mean(object@sent_scores, na.rm = T), " (",
+                             sd(object@sent_scores, na.rm = T), ")\n"))
           })
 
 #' Set of functions for summary of 'review_set' class in terms of sentiment
@@ -85,7 +85,7 @@ setMethod(f = "show",
 #' reviews
 #' @export
 #'
-#' @rdname review-set-summary
+#' @rdname review_set-summary
 #'
 #' @examples
 #' sentimentDistributionPie(review_set_example())
@@ -95,14 +95,18 @@ setMethod(f = "show",
 sentimentDistributionPie <- function(x,
                                      br = c(-Inf, -0.1, 0.1, Inf),
                                      colors = c("blue", "red", "green", "white")) {
-    res <- data.table(sent_score = x@sent_scores)
+    checkmate::assert_class(x, "review_set")
+    checkmate::assert_numeric(br, len = 4)
+    checkmate::assert_character(colors, len = 4)
+
+    res <- data.table::data.table(sent_score = x@sent_scores)
     res[, lab := cut(x = sent_score, breaks = br, labels = c("negative", "neutral", "positive"))]
     res[is.nan(sent_score), lab := "couldn't determine"]
     res <- res[, list(l = .N), by = "lab"]
     pie(res$l, labels = res$lab, main = "Sentiment distribution", col = colors)
 }
 
-#' @name review-set-summary
+#' @name review_set-summary
 #' @export
 sentimentDistributionHist <- function(x) {
     ggplot(data = data.table(x = x@sent_scores)) +
@@ -113,7 +117,7 @@ sentimentDistributionHist <- function(x) {
 }
 
 #' @export
-#' @name review-set-summary
+#' @name review_set-summary
 sentimentRatio <- function(x,
                            br = c(-Inf, -.1, .1, Inf)) {
     res <- data.table(sent_score = x@sent_scores)
@@ -123,7 +127,7 @@ sentimentRatio <- function(x,
 }
 
 #' @export
-#' @name review-set-summary
+#' @name review_set-summary
 sentimentSummary <- function(x) {
     res <- na.omit(x@sent_scores)
     list(mean = mean(res),

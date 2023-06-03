@@ -2,7 +2,7 @@
 % Please edit documentation in R/review_set.R
 \name{sentimentDistributionPie}
 \alias{sentimentDistributionPie}
-\alias{review-set-summary}
+\alias{review_set-summary}
 \alias{sentimentDistributionHist}
 \alias{sentimentRatio}
 \alias{sentimentSummary}
