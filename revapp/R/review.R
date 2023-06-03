@@ -117,13 +117,17 @@ setMethod(f = "word_stem",
               tm::stemDocument(x)
           })
 
+#' @param object An object to preprocess
+#'
 #' @export
+#' @name pre_process
 setGeneric(name = "pre_process",
-           def = function(x) {
+           def = function(object) {
                standardGeneric(f = "pre_process")
            })
 
 #' @export
+#' @rdname pre_process
 setMethod(f = "pre_process",
           signature = "character",
           definition = function(x) {
@@ -139,6 +143,7 @@ setMethod(f = "pre_process",
           })
 
 #' @export
+#' @rdname pre_process
 setMethod(f = "pre_process",
           signature = "review",
           definition = function(x) {

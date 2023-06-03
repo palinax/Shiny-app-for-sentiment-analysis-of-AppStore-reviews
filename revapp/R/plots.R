@@ -13,8 +13,9 @@ plot_rating_hour <- function(dt,
                              lw_col = "blue",
                              hgh_col = "red") {
     checkmate::assert_data_table(dt)
+
     oo <- dt[, list(rating = mean(rating), .N),
-             by = .(review_time = hour(review_time))]
+             by = list(review_time = hour(review_time))]
 
     ggplot(data = oo, aes(x = review_time, y = rating)) +
         geom_col(aes(fill = rating), color = "grey70") +
@@ -42,6 +43,7 @@ plot_rating_hour <- function(dt,
 plot_word_count <- function(oo, mn = 10) {
     checkmate::assert_data_table(oo)
     checkmate::assert_number(mn, lower = 0)
+
     rr <- oo[oo$proc_word != ""][order(-how_many)][1:mn]
     ggplot(data = rr) +
         geom_col(aes(x = how_many, y = substr(proc_word, 1, 20)))
